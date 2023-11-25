@@ -1,0 +1,47 @@
+﻿@model Cart
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@if (Model == null)
+{
+    <h3>Корзина пуста</h3>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>Кол-во</th>
+                        <th>Категория</th>
+                        <th>Общая цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model.Items)
+                    {
+                        <tr>
+                            <td>@x.Product.Name</td>
+                            <td>@x.Product.Price</td>
+                            <td>@x.Amount</td>
+                            <td>@x.Product.Category</td>
+                            <td>@x.Cost</td>
+                            <td><a href="/cart/changeamount?amount=1&id=@x.Product.Id">+</a></td>
+                            <td><a href="/cart/changeamount?amount=-1&id=@x.Product.Id">-</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h3>Итого : @Model.Cost</h3>
+        </div>
+    </div>
+    <div>
+        <a href="/shop/productspage">Продолжить покупки</a>
+        <a href="/cart/showorder">Оформить заказ</a>
+    </div>
+}

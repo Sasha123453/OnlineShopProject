@@ -1,0 +1,48 @@
+﻿@model List<ProductModel>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@if (Model == null)
+{
+    <h3>Список сравнения пуст</h3>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>Категория</th>
+                        <th>Объем оперативной памяти</th>
+                        <th>Процессор</th>
+                        <th>Количество ядер</th>
+                        <th>Максимальная частота</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model)
+                    {
+                        <tr>
+                            <td>@x.Name</td>
+                            <td>@x.Price</td>
+                            <td>@x.Category</td>
+                            <td>@x.Ram</td>
+                            <td>@x.Cpu</td>
+                            <td>@x.CoresAmount</td>
+                            <td>@x.MaxFrequency</td>
+                            <td class="col-3 text-end">
+                                <a class="btn btn-outline-warning" title="Удалить из списка" asp-controller="compare" asp-action="del" asp-route-id="@x.Id"><i class="bi bi-trash-fill"></i></a>
+                                <a class="btn btn-warning" title="Добавить в корзину" asp-controller="cart" asp-action="addtocart" asp-route-id="@x.Id"> <i class="bi bi-cart"></i> </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

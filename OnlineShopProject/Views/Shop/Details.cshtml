@@ -1,0 +1,19 @@
+﻿@model ProductModel
+@*
+    
+*@
+@{
+}
+<section style="display: flex">
+    <img />
+    <div class="col-3 card shadow">
+        <div class="card-body">
+            <p>Имя: @Model.Name</p>
+            <a role="button" class="btn" href="/cart/productbyid?id=@Model.Id">Добавить в корзину</a>
+        </div>
+    </div>
+    <div>Описание: @Model.Description></div>
+    <div>Категория: @Model.Category></div>
+    <a href="/shop/productspage">Вернуться</a>
+    <a href="/cart/addtocart">Вернуться</a>
+</section>

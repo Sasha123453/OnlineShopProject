@@ -1,0 +1,62 @@
+﻿@model Cart
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row">
+    <div class="col-5 card shadow-lg">
+        <h4>Ваш заказ</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Стоймость</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.Items)
+                {
+                    <tr>
+                        <td>@x.Product.Name</td>
+                        <td>@x.Product.Price</td>
+                        <td>@x.Amount</td>
+                        <td>@x.Cost</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-end">Общая стоймость: @Model.Cost</div>
+    </div>
+    <div class="col-6 card shadow-lg">
+        <form>
+            <div class="form-group">
+                <label for="name">Полное имя</label>
+                <input type="text" id="name" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" />
+            </div>
+            <div class="form-group">
+                <label for="number">Номер</label>
+                <input type="number" id="number" />
+            </div>
+            <div class="form-group">
+                <label for="address">Адрес</label>
+                <input type="text" id="address" />
+            </div>
+            <div class="form-group">
+                <label for="comment">Адрес</label>
+                <textarea id="comment"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="text-center">
+        <a class="btn btn-lg" href="/product/productspage">Продолжить покупки</a>
+        <a class="btn btn-lg" href="/cart/createorder">Оформить заказ</a>
+    </div>
+</div>
