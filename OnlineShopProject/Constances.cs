@@ -1,4 +1,6 @@
-﻿namespace OnlineShopProject
+﻿using OnlineShopProject.Interfaces;
+
+namespace OnlineShopProject
 {
     public class Constances : IConstances
     {

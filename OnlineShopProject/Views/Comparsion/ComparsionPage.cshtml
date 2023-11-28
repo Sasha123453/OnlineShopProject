@@ -36,7 +36,7 @@ else
                             <td>@x.CoresAmount</td>
                             <td>@x.MaxFrequency</td>
                             <td class="col-3 text-end">
-                                <a class="btn btn-outline-warning" title="Удалить из списка" asp-controller="compare" asp-action="del" asp-route-id="@x.Id"><i class="bi bi-trash-fill"></i></a>
+                                <a class="btn btn-outline-warning" title="Удалить из списка" asp-controller="comparsion" asp-action="DeleteFromComparsions" asp-route-id="@x.Id"><i class="bi bi-trash-fill"></i></a>
                                 <a class="btn btn-warning" title="Добавить в корзину" asp-controller="cart" asp-action="addtocart" asp-route-id="@x.Id"> <i class="bi bi-cart"></i> </a>
                             </td>
                         </tr>

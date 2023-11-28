@@ -1,5 +1,6 @@
 using OnlineShopProject;
-using OnlineShopProject.Models;
+using OnlineShopProject.InMemoryModels;
+using OnlineShopProject.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddSingleton<IConstances, Constances>();
 builder.Services.AddSingleton<IProductsRepository, ProductsRepository>();
 builder.Services.AddSingleton<IOrdersRepository, OrdersRepository>();
 builder.Services.AddSingleton<IComparsionRepository, ComparsionRepository>();
+builder.Services.AddSingleton<IFavoriteRepository, FavoriteRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,24 @@
+﻿@model List<ProductModel>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@if (Model != null && Model.Count > 0)
+{
+    @foreach (var x in Model)
+    {
+        <div class="col-3 card shadow">
+            <div class="card-body">
+                <div>Название: @x.Name</div>
+                <div>Название: @x.Price</div>
+                <div>Название: @x.Category</div>
+                <a href="/favorite/delete?id=@x.Id">удалить</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3>Избранное пусто</h3>
+}

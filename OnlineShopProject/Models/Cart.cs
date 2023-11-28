@@ -13,13 +13,15 @@
         }
         public decimal Cost { get
             {
-                decimal totalprice = 0;
-                foreach (var item in Items)
-                {
-                    totalprice += item.Cost;
-                }
-                return totalprice;
+                return Items?.Sum(x => x.Cost) ?? 0;
             } 
+        }
+        public decimal Amount
+        {
+            get
+            {
+                return Items?.Sum(x => x.Amount) ?? 0;
+            }
         }
     }
 }

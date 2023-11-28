@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShopProject.Interfaces;
 using OnlineShopProject.Models;
 
 namespace OnlineShopProject.Controllers
@@ -8,11 +9,13 @@ namespace OnlineShopProject.Controllers
         private readonly IConstances _constances;
         private readonly ICartsRepository _cartsRepository;
         private readonly IProductsRepository _productsRepository;
-        public CartController(IConstances constances, ICartsRepository cartsRepository, IProductsRepository productsRepository)
+        private readonly IOrdersRepository _ordersRepository;
+        public CartController(IConstances constances, ICartsRepository cartsRepository, IProductsRepository productsRepository, IOrdersRepository ordersRepository)
         {
             _constances = constances;
             _cartsRepository = cartsRepository;
             _productsRepository = productsRepository;
+            _ordersRepository = ordersRepository;
         }
         public IActionResult Index()
         {
@@ -34,8 +37,10 @@ namespace OnlineShopProject.Controllers
             var cart = _cartsRepository.GetCartByUserId(_constances.UserId);
             return View(cart);
         }
-        public IActionResult CreateOrder()
+        public IActionResult CreateOrder(OrderInfoModel orderInfo)
         {
+            var usercart = _cartsRepository.GetCartByUserId(_constances.UserId);
+            _ordersRepository.AddToOrders(usercart, orderInfo);
             _cartsRepository.RemoveCart(_constances.UserId);
             return View("CreateOrder");
         }

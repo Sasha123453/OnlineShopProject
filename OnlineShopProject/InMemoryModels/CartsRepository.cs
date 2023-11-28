@@ -1,4 +1,7 @@
-﻿namespace OnlineShopProject.Models
+﻿using OnlineShopProject.Interfaces;
+using OnlineShopProject.Models;
+
+namespace OnlineShopProject.InMemoryModels
 {
     public class CartsRepository : ICartsRepository
     {
@@ -38,12 +41,10 @@
             var toChange = cart.Items.FirstOrDefault(x => x.Product.Id == id);
             toChange.Amount += change;
         }
-        public Cart RemoveCart(string userId)
+        public void RemoveCart(string userId)
         {
             var cart = GetCartByUserId(userId);
-            if (cart != null) Carts.Remove(cart);
-            return cart;
+            if (cart != null) cart.Items.Clear();
         }
     }
 }
-   
