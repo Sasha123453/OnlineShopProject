@@ -13,11 +13,12 @@ namespace OnlineShopProject.Controllers
         }
         public IActionResult ProductsPage()
         {
-            return View(_productRepository.GetAllProducts();
+            return View(_productRepository.GetAllProducts());
         }
         public IActionResult Search(string name)
         {
-
+            var model = _productRepository.SearchProducts(name);
+            return View("ProductsPage", model);
         }
         public IActionResult Details(int id)
         {

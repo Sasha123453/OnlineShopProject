@@ -20,6 +20,10 @@ namespace OnlineShopProject.InMemoryModels
         {
             return products;
         }
+        public List<ProductModel> SearchProducts(string name)
+        {
+            return products.Where(x => x.Name == name).ToList();
+        }
         public void DeleteProduct(int id)
         {
             products.Remove(products.FirstOrDefault(x => x.Id == id));

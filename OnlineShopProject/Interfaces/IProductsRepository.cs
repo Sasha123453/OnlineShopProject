@@ -9,5 +9,6 @@ namespace OnlineShopProject
         public void DeleteProduct(int id);
         public void EditProduct(ProductModel model);
         public void AddProduct(ProductModel model);
+        public List<ProductModel> SearchProducts(string name);
     }
 }
