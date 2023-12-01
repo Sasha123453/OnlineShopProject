@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<ICartsRepository, CartsRepository>();
-builder.Services.AddSingleton<IConstances, Constances>();
+builder.Services.AddSingleton<IConstances,Constances>();
 builder.Services.AddSingleton<IProductsRepository, ProductsRepository>();
 builder.Services.AddSingleton<IOrdersRepository, OrdersRepository>();
 builder.Services.AddSingleton<IComparsionRepository, ComparsionRepository>();

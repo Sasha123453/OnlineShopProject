@@ -23,5 +23,9 @@
             CoresAmount = coresAmount;
             MaxFrequency = maxFrequency;
         }
+        public ProductModel()
+        {
+
+        }
     }
 }

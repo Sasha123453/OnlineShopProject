@@ -1,0 +1,38 @@
+﻿@model ProductModel
+<form method="post" asp-controller="Admin" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label asp-for="Name">Название</label>
+        <input asp-for="Name" value="@Model.Name"/>
+    </div>
+    <div>
+        <label asp-for="Description">Описание</label>
+        <input asp-for="Description" value="@Model.Description" />
+    </div>
+    <div>
+        <label asp-for="Category">Категория</label>
+        <input asp-for="Category" value="@Model.Category" />
+    </div>
+    <div>
+        <label asp-for="Cpu">Процессор</label>
+        <input asp-for="Cpu" value="@Model.Cpu" />
+    </div>
+    <div>
+        <label asp-for="MaxFrequency">Максимальная частота</label>
+        <input asp-for="MaxFrequency" value="@Model.MaxFrequency" />
+    </div>
+    <div>
+        <label asp-for="Price">Цена</label>
+        <input asp-for="Price" value="@Model.Price" />
+    </div>
+    <div>
+        <label asp-for="CoresAmount">Количество ядер</label>
+        <input asp-for="CoresAmount" value="@Model.CoresAmount" />
+    </div>
+    <div>
+        <label asp-for="Ram">Оперативная память</label>
+        <input asp-for="Ram" value="@Model.Ram" />
+    </div>
+    <input type="submit"/>
+</form>

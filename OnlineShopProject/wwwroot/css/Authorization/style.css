@@ -16,12 +16,13 @@ body{
     margin: 10px;
     padding-left: 20px;
 }
-a{
+a {
     text-decoration: none;
     color: white;
+    transition: 0.5s;
     margin: 0 23%;
 }
-.buton{
+.buton {
     height: 50px;
     background-color: #494545;
     border-radius: 5px;
@@ -45,3 +46,8 @@ p{
     justify-content: center;
     align-items: baseline
 }
+.buton:hover {
+    color: #000000;
+    background-color: #cecece;
+    transition: 0.5s;
+} 

@@ -1,0 +1,28 @@
+﻿@model List<ProductModel>
+@await Html.PartialAsync("Admin");
+<section>
+    <a href="/admin/addpage">Редактировать</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>@x.Description</td>
+                    <td>@x.Price</td>
+                    <td><a href="/admin/deleteproduct?id=@x.Id" class="btn btn-primary">удалить</a></td>
+                    <td><a href="/admin/editpage?id=@x.Id">Редактировать</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
