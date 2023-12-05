@@ -6,11 +6,11 @@ namespace OnlineShopProject.InMemoryModels
     public class OrdersRepository : IOrdersRepository
     {
         public List<Order> Orders = new List<Order>();
-        public Order GetOrderByUserId(string userId)
+        public List<Order> GetOrdersByUserId(string userId)
         {
-            return Orders.FirstOrDefault(x => x.Cart.UserId == userId);
+            return Orders.Where(x => x.Cart.UserId == userId).ToList();
         }
-        public void AddToOrders(Cart cart, OrderInfoModel orderInfo)
+        public void AddToOrders(Cart cart, AddressModel orderInfo)
         {
             Order order = new Order
             {
@@ -19,11 +19,6 @@ namespace OnlineShopProject.InMemoryModels
                 Info = orderInfo
             };
             Orders.Add(order);
-        }
-        public void RemoveOrder(string userId)
-        {
-            var order = GetOrderByUserId(userId);
-            if (order != null) order.Cart.Items.Clear();
         }
     }
 }

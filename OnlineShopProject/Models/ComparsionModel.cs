@@ -2,7 +2,7 @@
 {
     public class UserWithProductsModel
     {
-        public List<ProductModel> Products { get; set; }
+        public List<ProductViewModel> Products { get; set; }
         public string UserId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Interfaces;
 using OnlineShopProject.Interfaces;
 
 namespace OnlineShopProject.Controllers
@@ -19,17 +20,17 @@ namespace OnlineShopProject.Controllers
             var comparsion = _comparsionRepository.GetAllUserComparsions(_constances.UserId);
             return View(comparsion?.Products);
         }
-        public IActionResult AddToComparsion(int id)
-        {
-            var product = _productsRepository.GetProductById(id);
-            _comparsionRepository.AddToComparsion(product, _constances.UserId);
-            return RedirectToAction("ProductsPage", "Shop");
-        }
-        public IActionResult DeleteFromComparsions(int id)
-        {
-            var product = _productsRepository.GetProductById(id);
-            _comparsionRepository.Delete(product, _constances.UserId);
-            return RedirectToAction("ComparsionPage");
-        }
+        //public IActionResult AddToComparsion(int id)
+        //{
+        //    var product = _productsRepository.GetProductById(id);
+        //    _comparsionRepository.AddToComparsion(product, _constances.UserId);
+        //    return RedirectToAction("ProductsPage", "Shop");
+        //}
+        //public IActionResult DeleteFromComparsions(int id)
+        //{
+        //    var product = _productsRepository.GetProductById(id);
+        //    _comparsionRepository.Delete(product, _constances.UserId);
+        //    return RedirectToAction("ComparsionPage");
+        //}
     }
 }

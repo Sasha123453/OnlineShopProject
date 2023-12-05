@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 using OnlineShopProject.Interfaces;
 using OnlineShopProject.Models;
 
@@ -13,16 +15,18 @@ namespace OnlineShopProject.Controllers
         }
         public IActionResult ProductsPage()
         {
-            return View(_productRepository.GetAllProducts());
+            return View(ProductViewModel.ToProductViewModels(_productRepository.GetAllProducts()));
         }
         public IActionResult Search(string name)
         {
             var model = _productRepository.SearchProducts(name);
-            return View("ProductsPage", model);
+            var productViewModel = ProductViewModel.ToProductViewModels(model);
+            return View("ProductsPage", productViewModel);
         }
-        public IActionResult Details(int id)
+        public IActionResult Details(Guid id)
         {
-            return View(_productRepository.GetProductById(id));
+            var productViewModel = new ProductViewModel(_productRepository.GetProductById(id));
+            return View(productViewModel);
         }
     }
 }

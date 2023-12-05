@@ -1,0 +1,27 @@
+﻿@model List<AddressModel>
+<div>
+    <a href="/addresses/create">Добавить адрес</a>
+</div>
+@if (Model == null || Model.Count == 0)
+{
+    <h3>Адресов нет</h3>
+}
+else
+{
+    <section>
+        @foreach (var x in Model)
+        {
+            <div>
+                <div>
+                    <p>@x.FullName</p>
+                    <p>@x.PhoneNumber</p>
+                </div>
+                <p>@x.Address</p>
+                <div>
+                    <a href="/addresses/edit?id=@x.Id">Изменить</a>
+                    <a href="/addresses/delete?id=@x.Id">Удалить</a>
+                </div>
+            </div>
+        }
+    </section>
+}

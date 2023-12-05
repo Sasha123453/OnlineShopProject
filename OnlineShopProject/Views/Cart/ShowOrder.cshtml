@@ -1,9 +1,11 @@
-﻿@model Cart
+﻿@model OrderWithAddressModel
 
 @*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    
 *@
 @{
+    var cart = Model.Cart;
+    var address = Model.Address;
 }
 <div class="row">
     <div class="col-5 card shadow-lg">
@@ -18,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var x in Model.Items)
+                @foreach (var x in Model.Cart.Items)
                 {
                     <tr>
                         <td>@x.Product.Name</td>
@@ -29,30 +31,22 @@
                 }
             </tbody>
         </table>
-        <div class="text-end">Общая стоймость: @Model.Cost</div>
+        <div class="text-end">Общая стоймость: @Model.Cart.Cost</div>
     </div>
-    <div class="col-6 card shadow-lg">
-        <form asp-action="CreateOrder" asp-controller="Cart" method="post">
-            <div class="form-group">
-                <label for="name">Полное имя</label>
-                <input type="text" id="name" name="name"/>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email"/>
-            </div>
-            <div class="form-group">
-                <label for="number">Номер</label>
-                <input type="number" id="number" name="number" />
-            </div>
-            <div class="form-group">
-                <label for="city">Город</label>
-                <input type="text" id="city" name="city"/>
-            </div>
-            <div class="text-center">
-                <a type="submit" class="btn btn-lg" href="/product/productspage">Продолжить покупки</a>
-                <input type="submit" class="btn btn-lg">Оформить заказ</input>
-            </div>
-        </form>
-    </div>
+    @if (address == null)
+    {
+        <div>
+            <h3>Перед оформлением заказа добавьте адрес</h3>
+            <a href="/addresses/index">Добавить адрес</a>
+        </div>
+    }
+    else
+    {
+        <div>
+            <div>@address.FullName</div>
+            <div>@address.Address</div>
+        </div>
+        <a href="/cart/createorder">Оформить заказ</a>
+    }
+    <a href="/shop/productspage">Продолжить покупки</a>
 </div>

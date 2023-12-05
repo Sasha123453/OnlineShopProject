@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 using OnlineShopProject.Models;
 
 namespace OnlineShopProject.Controllers
@@ -16,27 +18,28 @@ namespace OnlineShopProject.Controllers
         }
         public IActionResult Products()
         {
-            var products = _productRepository.GetAllProducts();
+            var products = ProductViewModel.ToProductViewModels(_productRepository.GetAllProducts());
             return View(products);
         }
-        public IActionResult DeleteProduct(int id)
+        public IActionResult DeleteProduct(Guid id)
         {
             _productRepository.DeleteProduct(id);
             return RedirectToAction("Products");
         }
-        public IActionResult EditPage(int id)
+        public IActionResult EditPage(Guid id)
         {
             var product = _productRepository.GetProductById(id);
-            return View(product);
+            ProductViewModel model = new ProductViewModel(product);
+            return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(int id, ProductModel model)
+        public IActionResult Edit(int id, ProductViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return NotFound();
             }
-            _productRepository.EditProduct(model);
+            _productRepository.EditProduct((Product)model);
             return RedirectToAction("Products");
         }
         public IActionResult AddPage()
@@ -44,10 +47,10 @@ namespace OnlineShopProject.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(ProductModel model)
+        public IActionResult Add(ProductViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest();
-            _productRepository.AddProduct(model);
+            _productRepository.AddProduct((Product)model);
             return RedirectToAction("Products");
         }
         public IActionResult Roles()

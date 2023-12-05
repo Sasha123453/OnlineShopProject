@@ -10,7 +10,7 @@ namespace OnlineShopProject.InMemoryModels
         {
             return Carts.FirstOrDefault(x => x.UserId == userId);
         }
-        public void AddToCart(string userId, ProductModel model)
+        public void AddToCart(string userId, ProductViewModel model)
         {
             Cart cart = GetCartByUserId(userId);
             if (cart == null)
@@ -34,7 +34,7 @@ namespace OnlineShopProject.InMemoryModels
                 }
             }
         }
-        public void ChangeAmount(int change, int id, string userId)
+        public void ChangeAmount(int change, Guid id, string userId)
         {
             if (!(change == 1 || change == -1)) throw new Exception("Что-то пошло не так");
             var cart = GetCartByUserId(userId);

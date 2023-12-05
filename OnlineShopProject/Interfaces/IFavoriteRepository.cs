@@ -5,7 +5,7 @@ namespace OnlineShopProject
     public interface IFavoriteRepository
     {
         public UserWithProductsModel GetAllUserFavorites(string userId);
-        public void AddToFavorites(ProductModel product, string userId);
-        public void Delete(ProductModel product, string userId);
+        public void AddToFavorites(ProductViewModel product, string userId);
+        public void Delete(ProductViewModel product, string userId);
     }
 }

@@ -4,8 +4,7 @@ namespace OnlineShopProject
 {
     public interface IOrdersRepository
     {
-        public Order GetOrderByUserId(string userId);
-        public void AddToOrders(Cart cart, OrderInfoModel orderInfo);
-        public void RemoveOrder(string userId);
+        public List<Order> GetOrdersByUserId(string userId);
+        public void AddToOrders(Cart cart, AddressModel orderInfo);
     }
 }

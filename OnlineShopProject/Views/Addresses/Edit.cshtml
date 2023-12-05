@@ -1,0 +1,20 @@
+﻿@model AddressModel
+<section>
+    <form asp-action="edit" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="Id"/>
+        <div>
+            <label asp-for="FullName">ФИО</label>
+            <input asp-for="FullName" value="@Model.FullName"/>
+        </div>
+        <div>
+            <label asp-for="Address">Адрес</label>
+            <input asp-for="Address" value="@Model.Address"/>
+        </div>
+        <div>
+            <label asp-for="PhoneNumber">Номер телефона</label>
+            <input asp-for="PhoneNumber" value="@Model.PhoneNumber"/>
+        </div>
+        <input type="submit" value="Сохранить" />
+    </form>
+</section>

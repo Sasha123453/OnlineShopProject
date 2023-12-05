@@ -10,4 +10,8 @@
     <Folder Include="DbModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineShop.Db\OnlineShop.Db.csproj" />
+  </ItemGroup>
+
 </Project>

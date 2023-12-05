@@ -15,6 +15,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Название</th>
                         <th>Цена</th>
                         <th>Кол-во</th>
@@ -26,13 +27,19 @@ else
                     @foreach (var x in Model.Items)
                     {
                         <tr>
+                            <td>
+                                <div>
+                                    <label for="addtoserver"></label>
+                                    <button id="addtoserver" productid="@x.Product.Id"></button>
+                                </div>
+                            </td>
                             <td>@x.Product.Name</td>
-                            <td>@x.Product.Price</td>
-                            <td>@x.Amount</td>
+                            <td id="price">@x.Product.Price</td>
+                            <td id="amount">@x.Amount</td>
                             <td>@x.Product.Category</td>
-                            <td>@x.Cost</td>
-                            <td><a href="/cart/changeamount?amount=1&id=@x.Product.Id">+</a></td>
-                            <td><a href="/cart/changeamount?amount=-1&id=@x.Product.Id">-</a></td>
+                            <td id="cost">@x.Cost</td>
+                            <td><button id="changeamount" productid="@x.Product.Id" amount="1">+</button></td>
+                            <td><button id="changeamount" productid="@x.Product.Id" amount="-1">-</button></td>
                         </tr>
                     }
                 </tbody>
@@ -45,3 +52,42 @@ else
         <a href="/cart/showorder">Оформить заказ</a>
     </div>
 }
+<script>
+    debugger;
+    var addtoserverButtons = document.querySelectorAll("#addtoserver");
+    addtoserverButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            debugger;
+            var productid = $(this).attr("productid");
+            var success = get("/cart/addordeletepreorders?id=" + productid);
+            if (success) {
+                this.classList.toggle("checked");
+            }
+        });
+    });
+    var changeamountButtons = document.querySelectorAll("#changeamount");
+    changeamountButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            
+            var id = $(this).attr("productid");
+            var amountadd = parseInt($(this).attr("amount"));
+            debugger;
+            var success = get("/cart/changeamount?id=" + id + "&amount=" + amountadd);
+            if (success) {
+                var closest = $(this).closest("tr");
+                closest.find("#amount").html(parseInt(closest.find("#amount").html()) + amountadd);
+                closest.find("#cost").html(parseInt(closest.find("#cost").html()) + amountadd * parseInt(closest.find("#price").html()));
+                debugger;
+            }
+        });
+    });
+function get(url) {
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    }).then(response => response.ok);
+    }
+</script>

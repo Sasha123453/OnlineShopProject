@@ -1,4 +1,4 @@
-﻿@model ProductModel
+﻿@model ProductViewModel
 @*
     
 *@
@@ -10,10 +10,13 @@
         <div class="card-body">
             <p>Имя: @Model.Name</p>
             <a role="button" class="btn" href="/cart/productbyid?id=@Model.Id">Добавить в корзину</a>
+            <div>Описание: @Model.Description</div>
+            <div>Категория: @Model.Category</div>
+            <div>Цена: @Model.Price</div>
+            <div>Оперативная память: @Model.Ram</div>
+            <div>Количество ядер: @Model.CoresAmount</div>
+            <a href="/shop/productspage">Вернуться</a>
+            <a href="/cart/addtocart">Добавить в корзину </a>
         </div>
     </div>
-    <div>Описание: @Model.Description></div>
-    <div>Категория: @Model.Category></div>
-    <a href="/shop/productspage">Вернуться</a>
-    <a href="/cart/addtocart">Добавить в корзину </a>
 </section>

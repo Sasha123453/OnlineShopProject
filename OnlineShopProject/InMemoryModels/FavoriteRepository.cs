@@ -11,7 +11,7 @@ namespace OnlineShopProject.InMemoryModels
         {
             return Favorites.FirstOrDefault(x => x.UserId == userId);
         }
-        public void AddToFavorites(ProductModel product, string userId)
+        public void AddToFavorites(ProductViewModel product, string userId)
         {
             var model = GetAllUserFavorites(userId);
             if (model == null)
@@ -19,7 +19,7 @@ namespace OnlineShopProject.InMemoryModels
                 model = new UserWithProductsModel
                 {
                     UserId = userId,
-                    Products = new List<ProductModel> { product }
+                    Products = new List<ProductViewModel> { product }
                 };
                 Favorites.Add(model);
             }
@@ -28,7 +28,7 @@ namespace OnlineShopProject.InMemoryModels
                 if (!model.Products.Contains(product)) model.Products.Add(product);
             }
         }
-        public void Delete(ProductModel product, string userId)
+        public void Delete(ProductViewModel product, string userId)
         {
             var model = GetAllUserFavorites(userId);
             if (!(model == null))

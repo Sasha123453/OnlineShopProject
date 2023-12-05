@@ -10,7 +10,7 @@ namespace OnlineShopProject.InMemoryModels
         {
             return Comparsions.FirstOrDefault(x => x.UserId == userId);
         }
-        public void AddToComparsion(ProductModel product, string userId)
+        public void AddToComparsion(ProductViewModel product, string userId)
         {
             var model = GetAllUserComparsions(userId);
             if (model == null)
@@ -18,7 +18,7 @@ namespace OnlineShopProject.InMemoryModels
                 model = new UserWithProductsModel
                 {
                     UserId = userId,
-                    Products = new List<ProductModel> { product }
+                    Products = new List<ProductViewModel> { product }
                 };
                 Comparsions.Add(model);
             }
@@ -27,7 +27,7 @@ namespace OnlineShopProject.InMemoryModels
                 if (!model.Products.Contains(product)) model.Products.Add(product);
             }
         }
-        public void Delete(ProductModel product, string userId)
+        public void Delete(ProductViewModel product, string userId)
         {
             var model = GetAllUserComparsions(userId);
             if (!(model == null))

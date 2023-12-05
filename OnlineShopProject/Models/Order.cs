@@ -4,6 +4,6 @@
     {
         public Cart Cart { get; set; }
         public Guid Id { get; set; }
-        public OrderInfoModel Info { get; set; }
+        public AddressModel Info { get; set; }
     }
 }

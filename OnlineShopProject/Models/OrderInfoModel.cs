@@ -1,10 +1,14 @@
-﻿namespace OnlineShopProject.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OnlineShopProject.Models
 {
     public class OrderInfoModel
     {
-        public string Email { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string City { get; set; }
-        public string Number { get; set; }
+        [Required]
+        public string Phone { get; set; }
     }
 }
