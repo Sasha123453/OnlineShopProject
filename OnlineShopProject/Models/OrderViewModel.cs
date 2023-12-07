@@ -2,6 +2,6 @@
 {
     public class OrderViewModel
     {
-        public List<CartItem> Items { get; set; } 
+        public List<CartItemViewModel> Items { get; set; } 
     }
 }

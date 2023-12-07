@@ -1,15 +1,21 @@
-﻿namespace OnlineShopProject.Models
+﻿using OnlineShop.Db.Models;
+
+namespace OnlineShopProject.Models
 {
-    public class Cart
+    public class CartViewModel
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
-        public List<CartItem> Items { get; set;}
-        public Cart(string userId)
+        public List<CartItemViewModel> Items { get; set;}
+        public CartViewModel(string userId)
         {
             Id = Guid.NewGuid();
             UserId = userId;
-            Items = new List<CartItem>();
+            Items = new List<CartItemViewModel>();
+        }
+        public CartViewModel()
+        {
+
         }
         public decimal Cost { get
             {

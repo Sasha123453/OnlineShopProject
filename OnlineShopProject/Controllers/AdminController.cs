@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Interfaces;
 using OnlineShop.Db.Models;
 using OnlineShopProject.Models;
@@ -8,9 +9,11 @@ namespace OnlineShopProject.Controllers
     public class AdminController : Controller
     {
         private readonly IProductsRepository _productRepository;
-        public AdminController(IProductsRepository productRepository)
+        private readonly IMapper _mapper;
+        public AdminController(IProductsRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
         public IActionResult Orders()
         {
@@ -18,7 +21,7 @@ namespace OnlineShopProject.Controllers
         }
         public IActionResult Products()
         {
-            var products = ProductViewModel.ToProductViewModels(_productRepository.GetAllProducts());
+            var products = _mapper.Map<IEnumerable<ProductViewModel>>(_productRepository.GetAllProducts());
             return View(products);
         }
         public IActionResult DeleteProduct(Guid id)
@@ -28,8 +31,7 @@ namespace OnlineShopProject.Controllers
         }
         public IActionResult EditPage(Guid id)
         {
-            var product = _productRepository.GetProductById(id);
-            ProductViewModel model = new ProductViewModel(product);
+            var model = _mapper.Map<ProductViewModel>(_productRepository.GetProductById(id));
             return View(model);
         }
         [HttpPost]
@@ -39,7 +41,7 @@ namespace OnlineShopProject.Controllers
             {
                 return NotFound();
             }
-            _productRepository.EditProduct((Product)model);
+            _productRepository.EditProduct(_mapper.Map<Product>(model));
             return RedirectToAction("Products");
         }
         public IActionResult AddPage()
@@ -50,7 +52,7 @@ namespace OnlineShopProject.Controllers
         public IActionResult Add(ProductViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest();
-            _productRepository.AddProduct((Product)model);
+            _productRepository.AddProduct(_mapper.Map<Product>(model));
             return RedirectToAction("Products");
         }
         public IActionResult Roles()

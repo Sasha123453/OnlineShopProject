@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Interfaces;
 using OnlineShopProject.InMemoryModels;
 using OnlineShopProject.Interfaces;
 using OnlineShopProject.Models;
-using System.Collections.Concurrent;
-using System.Reflection.Metadata.Ecma335;
 
 namespace OnlineShopProject.Controllers
 {
@@ -16,9 +14,10 @@ namespace OnlineShopProject.Controllers
         private readonly IProductsRepository _productsRepository;
         private readonly IOrdersRepository _ordersRepository;
         private readonly IAddressesRepository _addressesRepository;
+        private readonly IMapper _mapper;
         private readonly UserOrders userOrders;
-        
-        public CartController(IConstances constances, ICartsRepository cartsRepository, IProductsRepository productsRepository, IOrdersRepository ordersRepository, UserOrders userOrders, IAddressesRepository addressesRepository)
+
+        public CartController(IConstances constances, ICartsRepository cartsRepository, IProductsRepository productsRepository, IOrdersRepository ordersRepository, UserOrders userOrders, IAddressesRepository addressesRepository, IMapper mapper)
         {
             _constances = constances;
             _cartsRepository = cartsRepository;
@@ -26,23 +25,23 @@ namespace OnlineShopProject.Controllers
             _ordersRepository = ordersRepository;
             this.userOrders = userOrders;
             _addressesRepository = addressesRepository;
+            _mapper = mapper;
 
         }
         public IActionResult Index()
         {
-            var x = _cartsRepository.GetCartByUserId(_constances.UserId);
-            return View(x);
+            var cart = _mapper.Map<CartViewModel>(_cartsRepository.GetCartByUserId(_constances.UserId));
+            return View(cart);
         }
         public IActionResult AddToCart(Guid id)
         {
-            var model = new ProductViewModel(_productsRepository.GetProductById(id));
-            _cartsRepository.AddToCart(_constances.UserId, model);  
-            return RedirectToAction("Index");
-        } 
-        public IActionResult ChangeAmount(Guid id, int amount)
+            var model = _productsRepository.GetProductById(id);
+            _cartsRepository.AddToCart(_constances.UserId, model);
+            return Ok();
+        }
+        public IActionResult DecreaseAmount(Guid id)
         {
-            _cartsRepository.ChangeAmount(amount, id, _constances.UserId);
-            userOrders.Update(_constances.UserId);
+            _cartsRepository.DecreaseAmount(id, _constances.UserId);
             return Ok();
         }
         //public IActionResult AddOrDeletePreorders(int id)
@@ -68,13 +67,14 @@ namespace OnlineShopProject.Controllers
             return View("CreateOrder");
         }
         [NonAction]
-        public (Cart, AddressModel) GetOrdersWithInfo()
+        public (CartViewModel, DeliveryInfoItemViewModel) GetOrdersWithInfo()
         {
             var cartItems = userOrders.GetOrdersById(_constances.UserId);
-            Cart cart = new Cart(_constances.UserId);
+            CartViewModel cart = new CartViewModel(_constances.UserId);
             cart.Items = cartItems;
-            var address = _addressesRepository?.GetAddresses(_constances.UserId)?.Addresses?[0];
-            return (cart, address);
+            var address = _addressesRepository?.GetAddresses(_constances.UserId).DeliveryInfoItems[0];
+            var model = _mapper.Map<DeliveryInfoItemViewModel>(address);
+            return (cart, model);
         }
     }
 }

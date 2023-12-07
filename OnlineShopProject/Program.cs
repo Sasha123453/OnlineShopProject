@@ -6,20 +6,22 @@ using OnlineShop.Db.Interfaces;
 using OnlineShop.Db.Services;
 using OnlineShop.Db.Models;
 using Microsoft.EntityFrameworkCore;
+using OnlineShopProject.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ICartsRepository, CartsRepository>();
+builder.Services.AddScoped<ICartsRepository, CartsRepository>();
 builder.Services.AddSingleton<IConstances,Constances>();
 builder.Services.AddSingleton<UserOrders>();
 builder.Services.AddTransient<IProductsRepository, ProductsRepository>();
-builder.Services.AddSingleton<IOrdersRepository, OrdersRepository>();
-builder.Services.AddSingleton<IAddressesRepository, AddressesRepository>();
-builder.Services.AddSingleton<IComparsionRepository, ComparsionRepository>();
-builder.Services.AddSingleton<IFavoriteRepository, FavoriteRepository>();
+builder.Services.AddAutoMapper(typeof(MapperProfile));
+builder.Services.AddTransient<IOrdersRepository, OrdersRepository>();
+builder.Services.AddTransient<IAddressesRepository, AddressesRepository>();
+builder.Services.AddTransient<IComparsionRepository, ComparsionRepository>();
+builder.Services.AddTransient<IFavoriteRepository, FavoriteRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

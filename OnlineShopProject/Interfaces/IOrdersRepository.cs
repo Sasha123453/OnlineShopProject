@@ -1,10 +1,10 @@
 ﻿using OnlineShopProject.Models;
 
-namespace OnlineShopProject
+namespace OnlineShop.Db.Interfaces
 {
     public interface IOrdersRepository
     {
         public List<Order> GetOrdersByUserId(string userId);
-        public void AddToOrders(Cart cart, AddressModel orderInfo);
+        public void AddToOrders(CartViewModel cart, DeliveryInfoItemViewModel orderInfo);
     }
 }

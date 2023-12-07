@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Models;
 using OnlineShopProject.Interfaces;
 using OnlineShopProject.Models;
 
@@ -8,15 +10,17 @@ namespace OnlineShopProject.Controllers
     {
         private readonly IAddressesRepository _addressesRepository;
         private readonly IConstances _constances;
-        public AddressesController(IAddressesRepository addressesRepository, IConstances constances)
+        private readonly IMapper _mapper;
+        public AddressesController(IAddressesRepository addressesRepository, IConstances constances, IMapper mapper)
         {
             _addressesRepository = addressesRepository;
             _constances = constances;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
-            var addresses = _addressesRepository.GetAddresses(_constances.UserId);
-            return View(addresses?.Addresses);
+            var addresses = _mapper.Map<DeliveryInfoViewModel>(_addressesRepository.GetAddresses(_constances.UserId));
+            return View(addresses.DeliveryInfos);
         }
         [HttpGet]
         public IActionResult Create()
@@ -24,9 +28,10 @@ namespace OnlineShopProject.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(AddressModel userAddress)
+        public IActionResult Create(DeliveryInfoItemViewModel userAddress)
         {
-            _addressesRepository.AddAddress(userAddress, _constances.UserId);
+            var info = _mapper.Map<DeliveryInfoItem>(userAddress);   
+            _addressesRepository.AddAddress(info, _constances.UserId);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -36,13 +41,14 @@ namespace OnlineShopProject.Controllers
             return View(address);
         }
         [HttpPost]
-        public IActionResult Edit(AddressModel userAddress)
+        public IActionResult Edit(DeliveryInfoItemViewModel userAddress)
         {
             if (!ModelState.IsValid)
             {
                 throw new Exception();
             }
-            _addressesRepository.EditAddress(userAddress);
+            var address = _mapper.Map<DeliveryInfoItem>(userAddress);
+            _addressesRepository.EditAddress(address);
             return RedirectToAction("Index");
         }
     }

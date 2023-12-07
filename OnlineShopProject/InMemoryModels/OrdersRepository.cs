@@ -1,4 +1,5 @@
-﻿using OnlineShopProject.Interfaces;
+﻿using OnlineShop.Db.Interfaces;
+using OnlineShopProject.Interfaces;
 using OnlineShopProject.Models;
 
 namespace OnlineShopProject.InMemoryModels
@@ -10,7 +11,7 @@ namespace OnlineShopProject.InMemoryModels
         {
             return Orders.Where(x => x.Cart.UserId == userId).ToList();
         }
-        public void AddToOrders(Cart cart, AddressModel orderInfo)
+        public void AddToOrders(CartViewModel cart, DeliveryInfoItemViewModel orderInfo)
         {
             Order order = new Order
             {

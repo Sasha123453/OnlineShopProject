@@ -24,37 +24,9 @@ namespace OnlineShopProject.Models
             CoresAmount = coresAmount;
             MaxFrequency = maxFrequency;
         }
-        public ProductViewModel(Product product) : this(product.Name, product.Description, product.Category, product.Price, product.Ram, product.Cpu, product.CoresAmount, product.MaxFrequency)
-        {
-            Id = product.Id;
-        }
         public ProductViewModel()
         {
 
-        }
-        public static explicit operator Product(ProductViewModel productViewModel)
-        {
-            return new Product
-            {
-                Id = productViewModel.Id,
-                Name = productViewModel.Name,
-                Description = productViewModel.Description,
-                Price = productViewModel.Price,
-                Category = productViewModel.Category,
-                Ram = productViewModel.Ram,
-                Cpu = productViewModel.Cpu,
-                CoresAmount = productViewModel.CoresAmount,
-                MaxFrequency = productViewModel.MaxFrequency
-            };
-        }
-        public static List<ProductViewModel> ToProductViewModels(List<Product> products)
-        {
-            var productViewModels = new List<ProductViewModel>();
-            foreach (var product in products)
-            {
-                productViewModels.Add(new ProductViewModel(product));
-            }
-            return productViewModels;
         }
     }
 }

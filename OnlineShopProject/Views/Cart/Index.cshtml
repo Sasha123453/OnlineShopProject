@@ -1,4 +1,4 @@
-﻿@model Cart
+﻿@model CartViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -38,8 +38,8 @@ else
                             <td id="amount">@x.Amount</td>
                             <td>@x.Product.Category</td>
                             <td id="cost">@x.Cost</td>
-                            <td><button id="changeamount" productid="@x.Product.Id" amount="1">+</button></td>
-                            <td><button id="changeamount" productid="@x.Product.Id" amount="-1">-</button></td>
+                            <td><button id="increasemount" productid="@x.Product.Id">+</button></td>
+                            <td><button id="decreaseamount" productid="@x.Product.Id">-</button></td>
                         </tr>
                     }
                 </tbody>
@@ -53,30 +53,30 @@ else
     </div>
 }
 <script>
-    debugger;
-    var addtoserverButtons = document.querySelectorAll("#addtoserver");
-    addtoserverButtons.forEach(function (button) {
+    var decreaseButtons = document.querySelectorAll("#decreaseamount");
+    decreaseButtons.forEach(function (button) {
         button.addEventListener("click", function () {
-            debugger;
             var productid = $(this).attr("productid");
-            var success = get("/cart/addordeletepreorders?id=" + productid);
+            var success = get("/cart/decreaseamount?id=" + productid);
             if (success) {
-                this.classList.toggle("checked");
+                var closest = $(this).closest("tr");
+                closest.find("#amount").html(parseInt(closest.find("#amount").html()) - 1);
+                closest.find("#cost").html(parseInt(closest.find("#cost").html()) - parseInt(closest.find("#price").html()));
             }
         });
     });
-    var changeamountButtons = document.querySelectorAll("#changeamount");
-    changeamountButtons.forEach(function (button) {
+        var increaseButtons = document.querySelectorAll("#increasemount");
+        increaseButtons.forEach(function (button) {
         button.addEventListener("click", function () {
             
             var id = $(this).attr("productid");
             var amountadd = parseInt($(this).attr("amount"));
             debugger;
-            var success = get("/cart/changeamount?id=" + id + "&amount=" + amountadd);
+            var success = get("/cart/addtocart?id=" + id);
             if (success) {
                 var closest = $(this).closest("tr");
-                closest.find("#amount").html(parseInt(closest.find("#amount").html()) + amountadd);
-                closest.find("#cost").html(parseInt(closest.find("#cost").html()) + amountadd * parseInt(closest.find("#price").html()));
+                closest.find("#amount").html(parseInt(closest.find("#amount").html()) + 1);
+                closest.find("#cost").html(parseInt(closest.find("#cost").html()) + parseInt(closest.find("#price").html()));
                 debugger;
             }
         });

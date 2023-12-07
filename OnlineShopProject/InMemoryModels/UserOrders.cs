@@ -10,19 +10,17 @@ namespace OnlineShopProject.InMemoryModels
 {
     public class UserOrders
     {
-        private ICartsRepository _cartsRepository;
-        private ConcurrentDictionary<string, (DateTime, List<CartItem>)> userOrders;
+        private ConcurrentDictionary<string, (DateTime, List<CartItemViewModel>)> userOrders;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         PeriodicTimer _timer;
-        public UserOrders(ICartsRepository cartsRepository, IServiceScopeFactory serviceScopeFactory)
+        public UserOrders(IServiceScopeFactory serviceScopeFactory)
         {
-            userOrders = new ConcurrentDictionary<string, (DateTime, List<CartItem>)>();
-            _cartsRepository = cartsRepository;
+            userOrders = new ConcurrentDictionary<string, (DateTime, List<CartItemViewModel>)>();
             _timer = new PeriodicTimer(TimeSpan.FromMinutes(30));
             _serviceScopeFactory = serviceScopeFactory;
-            CleanOrders(); 
+            CleanOrders();
         }
-        public List<CartItem> GetOrdersById(string userId)
+        public List<CartItemViewModel> GetOrdersById(string userId)
         {
             if (userOrders.ContainsKey(userId)) { return userOrders[userId].Item2; }
             throw new Exception();

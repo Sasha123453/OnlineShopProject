@@ -2,8 +2,8 @@
 {
     public class Order
     {
-        public Cart Cart { get; set; }
+        public CartViewModel Cart { get; set; }
         public Guid Id { get; set; }
-        public AddressModel Info { get; set; }
+        public DeliveryInfoItemViewModel Info { get; set; }
     }
 }

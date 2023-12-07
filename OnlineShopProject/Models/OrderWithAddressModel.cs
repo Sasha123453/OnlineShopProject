@@ -2,7 +2,7 @@
 {
     public class OrderWithAddressModel
     {
-        public Cart Cart { get; set; }
-        public AddressModel Address { get; set; }
+        public CartViewModel Cart { get; set; }
+        public DeliveryInfoItemViewModel Address { get; set; }
     }
 }

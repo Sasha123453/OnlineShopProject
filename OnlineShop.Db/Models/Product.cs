@@ -11,5 +11,14 @@
         public string Cpu { get; set; }
         public int CoresAmount { get; set; }
         public double MaxFrequency { get; set; }
+        public List<CartItem> CartItems { get; set; }
+        public List<Comparsion> Comparsions { get; set; }
+        public List<Favorite> Favorites { get; set; }
+        public Product()
+        {
+            CartItems = new List<CartItem>();
+            Comparsions = new List<Comparsion>();
+            Favorites = new List<Favorite>();
+        }
     }
 }

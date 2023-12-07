@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineShop.Db.Models
 {
@@ -14,5 +9,11 @@ namespace OnlineShop.Db.Models
             Database.EnsureCreated();
         }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Comparsion> Comparsions { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<DeliveryInfo> DeliveryInfos { get; set;}
+        public DbSet<DeliveryInfoItem> DeliveryInfoItems { get; set; }
     }
 }

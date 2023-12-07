@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Interfaces;
 using OnlineShopProject.Interfaces;
+using OnlineShopProject.Models;
 
 namespace OnlineShopProject.Views.Shared.ViewComponents.Cart
 {
@@ -7,15 +10,19 @@ namespace OnlineShopProject.Views.Shared.ViewComponents.Cart
     {
         private readonly ICartsRepository _cartsRepository;
         private readonly IConstances _constances;
-        public CartViewComponent(ICartsRepository cartsRepository, IConstances constances)
+        private readonly IMapper _mapper;
+        public CartViewComponent(ICartsRepository cartsRepository, IConstances constances, IMapper mapper)
         {
             _cartsRepository = cartsRepository;
             _constances = constances;
+            _mapper = mapper;
         }
         public IViewComponentResult Invoke()
         {
-            var rep = _cartsRepository.GetCartByUserId(_constances.UserId);
-            return View("Cart", rep?.Amount);
+
+            var cart = _cartsRepository.GetCartByUserId(_constances.UserId);
+            CartViewModel cartViewModel = _mapper.Map<CartViewModel>(cart);
+            return View("Cart", cartViewModel?.Amount);
         }
     }
 }
