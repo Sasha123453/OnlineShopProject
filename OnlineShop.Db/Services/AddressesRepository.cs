@@ -14,7 +14,7 @@ namespace OnlineShop.Db.Models
         }
         public DeliveryInfo GetAddresses(string userId)
         {
-            return _context.DeliveryInfos.Include(x => x.DeliveryInfoItems).Where(x => x.UserId == userId).FirstOrDefault();
+             return _context.DeliveryInfos.Include(x => x.DeliveryInfoItems).Where(x => x.UserId == userId).FirstOrDefault();
         }
         public DeliveryInfoItem GetAddressById(Guid id)
         {
@@ -34,9 +34,9 @@ namespace OnlineShop.Db.Models
                     PhoneNumber = address.PhoneNumber,
                     FullName = address.FullName,
                     Address = address.Address,
-                    DeliveryInfo = model
                 };
                 model.DeliveryInfoItems = new List<DeliveryInfoItem> { item };
+                _context.DeliveryInfos.Add(model);
             }
             else
             {
@@ -47,10 +47,18 @@ namespace OnlineShop.Db.Models
             }
             _context.SaveChanges();
         }
-        public void RemoveAddress(Guid id)
+        public void RemoveAddress(Guid id, string userId)
         {
-            var toRemove = GetAddressById(id);
-            _context.Remove(toRemove);
+            var info = GetAddresses(userId);
+            var toRemove = info.DeliveryInfoItems.FirstOrDefault(x => x.Id == id);
+            info.DeliveryInfoItems.Remove(toRemove);
+            _context.SaveChanges();
+        }
+        public DeliveryInfoItem GetCurrentUserInfo(string userId)
+        {
+            var infos = GetAddresses(userId);
+            //заглушка
+            return infos?.DeliveryInfoItems[0];
         }
         public void EditAddress(DeliveryInfoItem address)
         {

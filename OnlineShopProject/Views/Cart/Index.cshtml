@@ -30,7 +30,7 @@ else
                             <td>
                                 <div>
                                     <label for="addtoserver"></label>
-                                    <button id="addtoserver" productid="@x.Product.Id"></button>
+                                    <button id="tracking" productid="@x.Product.Id"></button>
                                 </div>
                             </td>
                             <td>@x.Product.Name</td>
@@ -44,50 +44,14 @@ else
                     }
                 </tbody>
             </table>
-            <h3>Итого : @Model.Cost</h3>
+            <h3 id="overallprice">Итого : @Model.Cost</h3>
         </div>
     </div>
     <div>
         <a href="/shop/productspage">Продолжить покупки</a>
-        <a href="/cart/showorder">Оформить заказ</a>
+        <button id="showorder">Оформить заказ</button>
     </div>
 }
-<script>
-    var decreaseButtons = document.querySelectorAll("#decreaseamount");
-    decreaseButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-            var productid = $(this).attr("productid");
-            var success = get("/cart/decreaseamount?id=" + productid);
-            if (success) {
-                var closest = $(this).closest("tr");
-                closest.find("#amount").html(parseInt(closest.find("#amount").html()) - 1);
-                closest.find("#cost").html(parseInt(closest.find("#cost").html()) - parseInt(closest.find("#price").html()));
-            }
-        });
-    });
-        var increaseButtons = document.querySelectorAll("#increasemount");
-        increaseButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-            
-            var id = $(this).attr("productid");
-            var amountadd = parseInt($(this).attr("amount"));
-            debugger;
-            var success = get("/cart/addtocart?id=" + id);
-            if (success) {
-                var closest = $(this).closest("tr");
-                closest.find("#amount").html(parseInt(closest.find("#amount").html()) + 1);
-                closest.find("#cost").html(parseInt(closest.find("#cost").html()) + parseInt(closest.find("#price").html()));
-                debugger;
-            }
-        });
-    });
-function get(url) {
-    return fetch(url, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then(response => response.ok);
-    }
-</script>
+@section Scripts{
+    <script src="~/js/CartScripts.js"></script>
+}

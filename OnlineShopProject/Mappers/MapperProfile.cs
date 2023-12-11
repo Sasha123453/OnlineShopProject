@@ -13,9 +13,13 @@ namespace OnlineShopProject.Mappers
             CreateMap<Comparsion, ComparsionViewModel>();
             CreateMap<CartItem, CartItemViewModel>();
             CreateMap<Cart, CartViewModel>();
-            CreateMap<DeliveryInfoItem, DeliveryInfoViewModel>();
+            CreateMap<DeliveryInfoItem, DeliveryInfoItemViewModel>();
             CreateMap<DeliveryInfo, DeliveryInfoViewModel>();
+            CreateMap<DeliveryInfoViewModel, DeliveryInfo>();
+            CreateMap<DeliveryInfoItemViewModel, DeliveryInfoItem>();
             CreateMap<Favorite, FavoriteViewModel>();
+            CreateMap<Order, OrderViewModel>();
+            CreateMap<OrderViewModel, Order>();
         }
     }
 }

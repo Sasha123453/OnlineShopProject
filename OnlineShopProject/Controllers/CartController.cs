@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 using OnlineShopProject.InMemoryModels;
 using OnlineShopProject.Interfaces;
 using OnlineShopProject.Models;
@@ -44,37 +46,34 @@ namespace OnlineShopProject.Controllers
             _cartsRepository.DecreaseAmount(id, _constances.UserId);
             return Ok();
         }
-        //public IActionResult AddOrDeletePreorders(int id)
-        //{
-        //    userOrders.AddOrDeletePreorders(id, _constances.UserId);
-        //    return Ok();
-        //}
-        public IActionResult ShowOrder()
+        public IActionResult ShowOrder(List<Guid> ids)
         {
-            (var cart, var address) = GetOrdersWithInfo();
-            OrderWithAddressModel model = new OrderWithAddressModel
+            var items = _cartsRepository.GetCartItemsByIds(ids, _constances.UserId);
+            var info = _addressesRepository.GetCurrentUserInfo(_constances.UserId);
+            var viewItems = _mapper.Map<List<CartItemViewModel>>(items);
+            var viewInfo = _mapper.Map<DeliveryInfoItemViewModel>(info);
+            OrderViewModel model = new OrderViewModel
             {
-                Cart = cart,
-                Address = address
+                CartItems = viewItems,
+                Info = viewInfo
             };
             return View(model);
         }
-        public IActionResult CreateOrder()
+        public IActionResult CreateOrder(List<Guid> ids)
         {
-            (var cart, var address) = GetOrdersWithInfo();
-            if (address == null) throw new Exception();
-            _ordersRepository.AddToOrders(cart, address);
+            var items = _cartsRepository.GetCartItemsByIds(ids, _constances.UserId);
+            var info = _addressesRepository.GetCurrentUserInfo(_constances.UserId);
+            if (info is null) throw new Exception("Адрес не может быть пустым");
+            var order = new Order
+            {
+                CartItems = items,
+                UserId = _constances.UserId,
+                Info = info,
+                Status = OrderStatus.Created
+            };
+            _ordersRepository.AddToOrders(order);
+            _cartsRepository.DeleteCartItems(items,_constances.UserId);
             return View("CreateOrder");
-        }
-        [NonAction]
-        public (CartViewModel, DeliveryInfoItemViewModel) GetOrdersWithInfo()
-        {
-            var cartItems = userOrders.GetOrdersById(_constances.UserId);
-            CartViewModel cart = new CartViewModel(_constances.UserId);
-            cart.Items = cartItems;
-            var address = _addressesRepository?.GetAddresses(_constances.UserId).DeliveryInfoItems[0];
-            var model = _mapper.Map<DeliveryInfoItemViewModel>(address);
-            return (cart, model);
         }
     }
 }

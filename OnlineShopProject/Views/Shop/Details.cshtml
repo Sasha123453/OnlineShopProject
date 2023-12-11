@@ -16,7 +16,12 @@
             <div>Оперативная память: @Model.Ram</div>
             <div>Количество ядер: @Model.CoresAmount</div>
             <a href="/shop/productspage">Вернуться</a>
-            <a href="/cart/addtocart">Добавить в корзину </a>
+            <button id="addtocart" class="btn" productid="@Model.Id" onclick="addToCart(this)">Добавить в корзину</button>
+            <button id="addtocomparsion" productid="Model.Id" class="btn" onclick="addToComparsion(this)">Добавить в сравнение</button>
+            <button id="addtofavorite" productid="@Model.Id" class="btn" onclick="addToFavorite(this)">Добавить в избранное</button>
         </div>
     </div>
 </section>
+@section Scripts {
+    <script src="~/js/MainPage.js"></script>
+}

@@ -4,10 +4,10 @@
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
-        public List<DeliveryInfoItemViewModel> DeliveryInfos { get; set; }
+        public List<DeliveryInfoItemViewModel> DeliveryInfoItems { get; set; }
         public int Amount { get
             {
-                return DeliveryInfos.Count;
+                return DeliveryInfoItems.Count;
             } 
         }
 

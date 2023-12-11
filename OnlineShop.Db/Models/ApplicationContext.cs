@@ -13,6 +13,7 @@ namespace OnlineShop.Db.Models
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Comparsion> Comparsions { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Order> Orders { get; set; } 
         public DbSet<DeliveryInfo> DeliveryInfos { get; set;}
         public DbSet<DeliveryInfoItem> DeliveryInfoItems { get; set; }
     }

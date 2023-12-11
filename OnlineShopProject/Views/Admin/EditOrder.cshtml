@@ -1,0 +1,11 @@
+﻿@model OrderViewModel
+<section>
+    <div>
+        <form method="post">
+            <div>Статус: @EnumHelper.GetDisplayName(Model.Status)</div>
+            <select asp-for="Status" asp-items="@Html.GetEnumSelectList<OrderStatus>()">
+            </select>
+            <input type="submit" asp-action="EditOrder" asp-route-orderid="@Model.Id"/>
+        </form>
+    </div>
+</section>

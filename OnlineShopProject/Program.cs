@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServe
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICartsRepository, CartsRepository>();
+builder.Services.AddTransient<IGenericRequests, GenericRequests>();
 builder.Services.AddSingleton<IConstances,Constances>();
 builder.Services.AddSingleton<UserOrders>();
 builder.Services.AddTransient<IProductsRepository, ProductsRepository>();

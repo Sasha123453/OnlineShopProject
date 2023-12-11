@@ -1,11 +1,8 @@
-﻿@model OrderWithAddressModel
+﻿@model OrderViewModel
 
-@*
-    
-*@
 @{
-    var cart = Model.Cart;
-    var address = Model.Address;
+    var cart = Model.CartItems;
+    var address = Model?.Info;
 }
 <div class="row">
     <div class="col-5 card shadow-lg">
@@ -20,18 +17,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var x in Model.Cart.Items)
+                @foreach (var x in cart)
                 {
                     <tr>
                         <td>@x.Product.Name</td>
                         <td>@x.Product.Price</td>
                         <td>@x.Amount</td>
                         <td>@x.Cost</td>
+                        <td><button id="decreasebutton" productid="@x.Product.Id"></button>-</td>
+                        <td><button id="increasebutton" productid="@x.Product.Id"></button>+</td>
                     </tr>
                 }
             </tbody>
         </table>
-        <div class="text-end">Общая стоймость: @Model.Cart.Cost</div>
+        <div id="overallprice" class="text-end">Общая стоймость: @Model.Cost</div>
     </div>
     @if (address == null)
     {
@@ -46,7 +45,11 @@
             <div>@address.FullName</div>
             <div>@address.Address</div>
         </div>
-        <a href="/cart/createorder">Оформить заказ</a>
+        <button id="showorder">Оформить заказ</button>
     }
     <a href="/shop/productspage">Продолжить покупки</a>
 </div>
+
+@section Scripts{
+    <script src="~/js/ShowOrder.js"></script>
+}

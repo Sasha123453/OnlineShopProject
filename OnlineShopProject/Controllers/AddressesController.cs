@@ -20,7 +20,7 @@ namespace OnlineShopProject.Controllers
         public IActionResult Index()
         {
             var addresses = _mapper.Map<DeliveryInfoViewModel>(_addressesRepository.GetAddresses(_constances.UserId));
-            return View(addresses.DeliveryInfos);
+            return View(addresses?.DeliveryInfoItems);
         }
         [HttpGet]
         public IActionResult Create()
@@ -49,6 +49,11 @@ namespace OnlineShopProject.Controllers
             }
             var address = _mapper.Map<DeliveryInfoItem>(userAddress);
             _addressesRepository.EditAddress(address);
+            return RedirectToAction("Index");
+        }
+        public IActionResult Remove(Guid id)
+        {
+            _addressesRepository.RemoveAddress(id, _constances.UserId);
             return RedirectToAction("Index");
         }
     }

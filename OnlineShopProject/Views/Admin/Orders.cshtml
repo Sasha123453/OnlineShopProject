@@ -1,1 +1,30 @@
-﻿@await Html.PartialAsync("Admin");
+﻿@using OnlineShopProject.Helpers
+@model List<OrderViewModel>
+@await Html.PartialAsync("Admin");
+<section>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Общая стоймость</th>
+                <th>Полное имя</th>
+                <th>Адрес</th>
+                <th>Номер телефона</th>
+                <th>Статус</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Cost</td>
+                    <td>@x.Info.FullName</td>
+                    <td>@x.Info.Address</td>
+                    <td>@x.Info.PhoneNumber</td>
+                    <td>@EnumHelper.GetDisplayName(x.Status)</td>
+                    <td><a href="/admin/editorder?id=@x.Id">Редактировать</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
