@@ -7,11 +7,13 @@ using OnlineShop.Db.Services;
 using OnlineShop.Db.Models;
 using Microsoft.EntityFrameworkCore;
 using OnlineShopProject.Mappers;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
-// Add services to the container.
+builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connection));
+builder.Services.AddIdentity<User,IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICartsRepository, CartsRepository>();
 builder.Services.AddTransient<IGenericRequests, GenericRequests>();
@@ -37,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

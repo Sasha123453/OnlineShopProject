@@ -1,4 +1,4 @@
-﻿@using OnlineShopProject.Helpers
+﻿
 @model List<OrderViewModel>
 @await Html.PartialAsync("Admin");
 <section>
@@ -22,7 +22,7 @@
                     <td>@x.Info.Address</td>
                     <td>@x.Info.PhoneNumber</td>
                     <td>@EnumHelper.GetDisplayName(x.Status)</td>
-                    <td><a href="/admin/editorder?id=@x.Id">Редактировать</a></td>
+                    <td><a asp-action="EditOrder" asp-route-id="@x.Id">Редактировать</a></td>
                 </tr>
             }
         </tbody>
