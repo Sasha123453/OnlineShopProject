@@ -5,9 +5,9 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface IComparsionRepository
     {
-        public List<Product> GetUserComparsions(string userId);
-        public Comparsion GetComparsion(Guid productId, string userId);
-        public void AddToComparsion(Product product, string userId);
-        public void Delete(Guid productId, string userId);
+        public List<Product> GetByUserId(string userId);
+        public Comparsion GetById(Guid productId, string userId);
+        public void Add(Product product, string userId);
+        public void Remove(Guid productId, string userId);
     }
 }

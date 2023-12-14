@@ -8,10 +8,10 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface IOrdersRepository
     {
-        public void AddToOrders(Order order);
+        public void Add(Order order);
+        public void Edit(Guid orderId, OrderStatus status);
         public List<Order> GetAll();
-        public void EditOrder(Guid orderId, OrderStatus status);
-        public List<Order> GetOrdersByUserId(string userId);
-        public Order GetOrderById(Guid id);
+        public List<Order> GetByUserId(string userId);
+        public Order GetById(Guid id);
     }
 }

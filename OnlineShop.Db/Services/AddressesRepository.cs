@@ -12,17 +12,17 @@ namespace OnlineShop.Db.Models
         {
             _context = context;
         }
-        public DeliveryInfo GetAddresses(string userId)
+        public DeliveryInfo GetByUserId(string userId)
         {
              return _context.DeliveryInfos.Include(x => x.DeliveryInfoItems).Where(x => x.UserId == userId).FirstOrDefault();
         }
-        public DeliveryInfoItem GetAddressById(Guid id)
+        public DeliveryInfoItem GetById(Guid id)
         {
             return _context.DeliveryInfoItems.Where(x => x.Id == id).FirstOrDefault();
         }
-        public void AddAddress(DeliveryInfoItem address, string userId)
+        public void Add(DeliveryInfoItem address, string userId)
         {
-            var addresses = GetAddresses(userId);
+            var addresses = GetByUserId(userId);
             if (addresses == null)
             {
                 var model = new DeliveryInfo
@@ -47,22 +47,16 @@ namespace OnlineShop.Db.Models
             }
             _context.SaveChanges();
         }
-        public void RemoveAddress(Guid id, string userId)
+        public void Remove(Guid id, string userId)
         {
-            var info = GetAddresses(userId);
+            var info = GetByUserId(userId);
             var toRemove = info.DeliveryInfoItems.FirstOrDefault(x => x.Id == id);
             info.DeliveryInfoItems.Remove(toRemove);
             _context.SaveChanges();
         }
-        public DeliveryInfoItem GetCurrentUserInfo(string userId)
+        public void Edit(DeliveryInfoItem address)
         {
-            var infos = GetAddresses(userId);
-            //заглушка
-            return infos?.DeliveryInfoItems[0];
-        }
-        public void EditAddress(DeliveryInfoItem address)
-        {
-            var toEdit = GetAddressById(address.Id);
+            var toEdit = GetById(address.Id);
             toEdit.Address = address.Address;
             toEdit.PhoneNumber = address.PhoneNumber;
             toEdit.FullName = address.FullName;

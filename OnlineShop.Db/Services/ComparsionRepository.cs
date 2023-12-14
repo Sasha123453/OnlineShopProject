@@ -12,21 +12,21 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public List<Product> GetUserComparsions(string userId)
+        public List<Product> GetByUserId(string userId)
         {
             return _context.Comparsions.Include(x => x.Product)
                 .Where(x => x.UserId == userId)
                 .Select(x => x.Product)
                 .ToList();
         }
-        public Comparsion GetComparsion(Guid productId, string userId)
+        public Comparsion GetById(Guid productId, string userId)
         {
             return _context.Comparsions.Include(x => x.Product)
                 .FirstOrDefault(x => x.Product.Id == productId && x.UserId == userId)!;
         }
-        public void AddToComparsion(Product product, string userId)
+        public void Add(Product product, string userId)
         {
-            var check = GetComparsion(product.Id, userId);
+            var check = GetById(product.Id, userId);
             if (check == null)
             {
                 var comparsion = new Comparsion
@@ -38,9 +38,9 @@ namespace OnlineShop.Db.Services
             }
             _context.SaveChanges();
         }
-        public void Delete(Guid productId, string userId)
+        public void Remove(Guid productId, string userId)
         {
-            var model = GetComparsion(productId, userId);
+            var model = GetById(productId, userId);
             if (model != null)
             {
                 _context.Comparsions.Remove(model);

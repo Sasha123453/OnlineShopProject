@@ -12,25 +12,25 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public void AddToOrders(Order order)
+        public void Add(Order order)
         {
             _context.Orders.Add(order);
             _context.SaveChanges();
         }
-        public void EditOrder(Guid orderId, OrderStatus status)
+        public void Edit(Guid orderId, OrderStatus status)
         {
-            GetOrderById(orderId).Status = status;
+            GetById(orderId).Status = status;
             _context.SaveChanges();
         }
         public List<Order> GetAll()
         {
             return _context.Orders.Include(x => x.Info).Include(x => x.CartItems).ThenInclude(x => x.Product).ToList(); 
         }
-        public List<Order> GetOrdersByUserId(string userId)
+        public List<Order> GetByUserId(string userId)
         {
             return _context.Orders.Where(x => x.UserId == userId).ToList();
         }
-        public Order GetOrderById(Guid id)
+        public Order GetById(Guid id)
         {
             return _context.Orders.FirstOrDefault(x => x.Id == id);
         }

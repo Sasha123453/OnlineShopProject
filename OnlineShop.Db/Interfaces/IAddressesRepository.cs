@@ -7,11 +7,10 @@ namespace OnlineShopProject.Interfaces
 {
     public interface IAddressesRepository
     {
-        public DeliveryInfo GetAddresses(string userId);
-        public DeliveryInfoItem GetAddressById(Guid id);
-        public void AddAddress(DeliveryInfoItem address, string userId);
-        public void RemoveAddress(Guid id, string userId);
-        public DeliveryInfoItem GetCurrentUserInfo(string userId);
-        public void EditAddress(DeliveryInfoItem address);
+        public DeliveryInfo GetByUserId(string userId);
+        public DeliveryInfoItem GetById(Guid id);
+        public void Add(DeliveryInfoItem address, string userId);
+        public void Remove(Guid id, string userId);
+        public void Edit(DeliveryInfoItem address);
     }
 }

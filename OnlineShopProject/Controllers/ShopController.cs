@@ -16,17 +16,17 @@ namespace OnlineShopProject.Controllers
         }
         public IActionResult ProductsPage()
         {
-            var model = _mapper.Map<IEnumerable<ProductViewModel>>(_productRepository.GetAllProducts());
+            var model = _mapper.Map<IEnumerable<ProductViewModel>>(_productRepository.GetAll());
             return View(model);
         }
         public IActionResult Search(string name)
         {
-            var model = _mapper.Map<IEnumerable<ProductViewModel>>(_productRepository.SearchProducts(name));
+            var model = _mapper.Map<IEnumerable<ProductViewModel>>(_productRepository.Search(name));
             return View("ProductsPage", model);
         }
         public IActionResult Details(Guid id)
         {
-            var productViewModel = _mapper.Map<ProductViewModel>(_productRepository.GetProductById(id));
+            var productViewModel = _mapper.Map<ProductViewModel>(_productRepository.GetById(id));
             return View(productViewModel);
         }
     }

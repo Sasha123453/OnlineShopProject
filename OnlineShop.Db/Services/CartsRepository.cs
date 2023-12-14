@@ -12,13 +12,13 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public Cart GetCartByUserId(string userId)
+        public Cart GetByUserId(string userId)
         {
             return _context.Carts.Include(x => x.Items).ThenInclude(x => x.Product).Where(x => x.UserId == userId).FirstOrDefault();
         }
-        public void AddToCart(string userId, Product model)
+        public void Add(string userId, Product model)
         {
-            Cart cart = GetCartByUserId(userId);
+            Cart cart = GetByUserId(userId);
             if (cart == null)
             {
                 Cart newCart = new Cart
@@ -52,9 +52,13 @@ namespace OnlineShop.Db.Services
             }
             _context.SaveChanges();
         }
-        public void DeleteCartItems(List<CartItem> items, string userId)
+        public int GetCountByUserId(string userId)
         {
-            var cart = GetCartByUserId(userId);
+            return _context.Carts.Where(User => User.UserId == userId).Count();
+        }
+        public void RemoveItems(List<CartItem> items, string userId)
+        {
+            var cart = GetByUserId(userId);
             foreach (var item in items)
             {
                 cart.Items.Remove(item);
@@ -63,7 +67,7 @@ namespace OnlineShop.Db.Services
         }
         public void DecreaseAmount(Guid id, string userId)
         {
-            Cart cart = GetCartByUserId(userId);
+            Cart cart = GetByUserId(userId);
             var item = cart.Items.FirstOrDefault(x => x.ProductId == id);
             if (item != null)
             {
@@ -72,9 +76,9 @@ namespace OnlineShop.Db.Services
             }
             _context.SaveChanges();
         }
-        public List<CartItem> GetCartItemsByIds(List<Guid> ids, string userId)
+        public List<CartItem> GetByIds(List<Guid> ids, string userId)
         {
-            var cart = GetCartByUserId(userId);
+            var cart = GetByUserId(userId);
             return cart.Items.Where(x => ids.Contains(x.ProductId)).ToList();
         }
     }

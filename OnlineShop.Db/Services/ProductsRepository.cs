@@ -13,25 +13,25 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public Product GetProductById(Guid id)
+        public Product GetById(Guid id)
         {
             return _context.Products.FirstOrDefault(x => x.Id == id);
         }
-        public List<Product> GetAllProducts()
+        public List<Product> GetAll()
         {
             return _context.Products.ToList();
         }
-        public List<Product> SearchProducts(string name)
+        public List<Product> Search(string name)
         {
             return _context.Products.Where(x => x.Name == name).ToList();
         }
-        public void DeleteProduct(Guid id)
+        public void Remove(Guid id)
         {
             _context.Remove(_context.Products.FirstOrDefault(x => x.Id == id));
             _context.SaveChanges();
         }
 
-        public void EditProduct(Product model)
+        public void Edit(Product model)
         {
             var toEdit = _context.Products.AsNoTracking().FirstOrDefault(x => x.Id == model.Id);
             if (toEdit != null)
@@ -49,7 +49,7 @@ namespace OnlineShop.Db.Services
             _context.SaveChanges();
 
         }
-        public void AddProduct(Product model)
+        public void Add(Product model)
         {
             _context.Products.Add(model);
             _context.SaveChanges();

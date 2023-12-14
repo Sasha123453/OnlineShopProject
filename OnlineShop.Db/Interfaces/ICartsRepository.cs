@@ -7,10 +7,11 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface ICartsRepository
     {
-        public Cart GetCartByUserId(string userId);
-        public void AddToCart(string userId, Product model);
+        public Cart GetByUserId(string userId);
+        public void Add(string userId, Product model);
         public void DecreaseAmount(Guid id, string userId);
-        public List<CartItem> GetCartItemsByIds(List<Guid> ids, string userId);
-        public void DeleteCartItems(List<CartItem> items, string userId);
+        public List<CartItem> GetByIds(List<Guid> ids, string userId);
+        public void RemoveItems(List<CartItem> items, string userId);
+        public int GetCountByUserId(string userId);
     }
 }

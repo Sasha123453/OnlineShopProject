@@ -1,0 +1,16 @@
+﻿@model Register
+<link rel="stylesheet" href="~/css/Authorization/style.css">
+<div class="content">
+    <div class="vhod"><h1>Регистрация</h1></div>
+    <form asp-action="Register" method="post">
+        <div>
+            <div asp-validation-summary="ModelOnly"></div>
+            <input asp-for="Email" class="input" type="text" name="Email" placeholder="Почта">
+            <input asp-for="UserName" class="input" type="text" name="UserName" placeholder="Логин">
+            <input asp-for="Password" class="input" type="password" name="Password" placeholder="Пароль">
+            <input asp-for="PasswordConfirmation" class="input" type="password" name="PasswordConfirmation" placeholder="Подтвердите пароль">
+        </div>
+        <input type="submit" class="buton">Зарегистрироваться</input>
+    </form>
+    <a asp-area="Identity" asp-controller="Auth" asp-action="Login" class="gg1">Уже есть аккаунт?</a>
+</div>

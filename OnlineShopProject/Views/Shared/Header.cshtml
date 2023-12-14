@@ -9,10 +9,10 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="cart" asp-action="Index">Корзина @await Component.InvokeAsync("Cart")</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Корзина @await Component.InvokeAsync("Cart")</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="comparsion" asp-action="ComparsionPage">Сравнение</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Comparsion" asp-action="ComparsionPage">Сравнение</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Favorite" asp-action="Index">Избранное</a>
@@ -20,12 +20,26 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Адреса</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Login">Войти</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Orders">Админ</a>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Auth" asp-action="LogOut">Выйти</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-area="Identity"
+                               asp-controller="Auth"
+                               asp-action="Login">About Blog</a>
+                        </li>
+                    }
+                    @if (User.IsInRole(Constants.DefaultAdminRole))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Product" asp-action="Products">Админ</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

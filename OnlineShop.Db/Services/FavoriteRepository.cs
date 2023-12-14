@@ -12,21 +12,21 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public List<Product> GetUserFavorites(string userId)
+        public List<Product> GetByUserId(string userId)
         {
             return _context.Favorites.Include(x => x.Product)
                 .Where(x => x.UserId == userId)
                 .Select(x => x.Product)
                 .ToList();
         }
-        public Favorite GetFavorite(Guid productId, string userId)
+        public Favorite GetById(Guid productId, string userId)
         {
             return _context.Favorites.Include(x => x.Product)
                 .FirstOrDefault(x => x.UserId == userId && x.Product.Id == productId);
         }
-        public void AddToFavorites(Product product, string userId)
+        public void Add(Product product, string userId)
         {
-            var check = GetFavorite(product.Id, userId);
+            var check = GetById(product.Id, userId);
             if (check == null)
             {
                 var favorite = new Favorite
@@ -36,12 +36,12 @@ namespace OnlineShop.Db.Services
                 };
                 _context.Favorites.Add(favorite);
             }
-            var model = GetUserFavorites(userId);
+            var model = GetByUserId(userId);
             _context.SaveChanges();
         }
-        public void Delete(Guid productId, string userId)
+        public void Remove(Guid productId, string userId)
         {
-            var model = GetFavorite(productId, userId);
+            var model = GetById(productId, userId);
             if (model != null)
             {
                 _context.Remove(model);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Models;
 using OnlineShopProject.Interfaces;
@@ -6,20 +7,19 @@ using OnlineShopProject.Models;
 
 namespace OnlineShopProject.Controllers
 {
+    [Authorize]
     public class AddressesController : Controller
     {
         private readonly IAddressesRepository _addressesRepository;
-        private readonly IConstances _constances;
         private readonly IMapper _mapper;
-        public AddressesController(IAddressesRepository addressesRepository, IConstances constances, IMapper mapper)
+        public AddressesController(IAddressesRepository addressesRepository, IMapper mapper)
         {
             _addressesRepository = addressesRepository;
-            _constances = constances;
             _mapper = mapper;
         }
         public IActionResult Index()
         {
-            var addresses = _mapper.Map<DeliveryInfoViewModel>(_addressesRepository.GetAddresses(_constances.UserId));
+            var addresses = _mapper.Map<DeliveryInfoViewModel>(_addressesRepository.GetByUserId(User.Identity.Name));
             return View(addresses?.DeliveryInfoItems);
         }
         [HttpGet]
@@ -31,13 +31,13 @@ namespace OnlineShopProject.Controllers
         public IActionResult Create(DeliveryInfoItemViewModel userAddress)
         {
             var info = _mapper.Map<DeliveryInfoItem>(userAddress);   
-            _addressesRepository.AddAddress(info, _constances.UserId);
+            _addressesRepository.Add(info, User.Identity.Name);
             return RedirectToAction("Index");
         }
         [HttpGet]
         public IActionResult Edit(Guid id)
         {
-            var address = _addressesRepository.GetAddressById(id);
+            var address = _addressesRepository.GetById(id);
             return View(address);
         }
         [HttpPost]
@@ -48,12 +48,12 @@ namespace OnlineShopProject.Controllers
                 throw new Exception();
             }
             var address = _mapper.Map<DeliveryInfoItem>(userAddress);
-            _addressesRepository.EditAddress(address);
+            _addressesRepository.Edit(address);
             return RedirectToAction("Index");
         }
         public IActionResult Remove(Guid id)
         {
-            _addressesRepository.RemoveAddress(id, _constances.UserId);
+            _addressesRepository.Remove(id, User.Identity.Name);
             return RedirectToAction("Index");
         }
     }
