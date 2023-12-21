@@ -15,12 +15,10 @@ namespace OnlineShopProject.Controllers
     {
         private readonly IAddressesRepository _addressesRepository;
         private readonly IMapper _mapper;
-        private readonly IUsersService _usersService;
-        public AddressesController(IAddressesRepository addressesRepository, IMapper mapper, IUsersService usersService)
+        public AddressesController(IAddressesRepository addressesRepository, IMapper mapper)
         {
             _addressesRepository = addressesRepository;
             _mapper = mapper;
-            _usersService = usersService;
         }
         public async Task<IActionResult> Index()
         {
@@ -69,13 +67,13 @@ namespace OnlineShopProject.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             await _addressesRepository.SetCurrentAsync(userId, id);
-            return RedirectToAction("Index");
+            return Ok();
         }
         public async Task<IActionResult> GetDefault(Guid id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await _addressesRepository.GetCurrentAsync(userId);
-            return RedirectToAction("Index");
+            var res = await _addressesRepository.GetCurrentAsync(userId);
+            return Ok(res);
         }
     }
 }

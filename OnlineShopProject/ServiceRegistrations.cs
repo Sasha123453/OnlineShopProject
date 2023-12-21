@@ -24,7 +24,6 @@ public static class ServicesRegistration
         services.AddScoped<ICartsRepository, CartsRepository>();
         services.AddTransient<IViewRequests, ViewRequests>();
         services.AddTransient<IProductsRepository, ProductsRepository>();
-        services.AddTransient<IUsersService, UsersService>();
         services.AddTransient<IOrdersRepository, OrdersRepository>();
         services.AddTransient<IAddressesRepository, AddressesRepository>();
         services.AddTransient<IComparsionRepository, ComparsionRepository>();

@@ -19,17 +19,15 @@ namespace OnlineShopProject.Controllers
         private readonly IAddressesRepository _addressesRepository;
         private readonly IMapper _mapper;
         private readonly ISessionsRepository<Cart> _sessionCartsRepository;
-        private readonly IUsersService _userService;
         private readonly UserManager<User> _userManager;
 
-        public CartController(ICartsRepository cartsRepository, IProductsRepository productsRepository, IOrdersRepository ordersRepository, IAddressesRepository addressesRepository, IMapper mapper, IUsersService userService, UserManager<User> userManager, ISessionsRepository<Cart> sessionCartsRepository)
+        public CartController(ICartsRepository cartsRepository, IProductsRepository productsRepository, IOrdersRepository ordersRepository, IAddressesRepository addressesRepository, IMapper mapper, UserManager<User> userManager, ISessionsRepository<Cart> sessionCartsRepository)
         {
             _cartsRepository = cartsRepository;
             _productsRepository = productsRepository;
             _ordersRepository = ordersRepository;
             _addressesRepository = addressesRepository;
             _mapper = mapper;
-            _userService = userService;
             _userManager = userManager;
             _sessionCartsRepository = sessionCartsRepository;
         }

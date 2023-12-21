@@ -79,10 +79,23 @@ namespace OnlineShopProject.Services
             }
             return false;
         }
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~CacheService()
+        {
+            Dispose(false);
+        }
+        private bool isDisposed = false;
+        private void Dispose(bool disposing)
+        {
+            if (isDisposed) return;
+            if (disposing) { }
+            _lock.Dispose();
+            _timer.Dispose();
+            isDisposed = true;
         }
         private class TtkValue
         {
