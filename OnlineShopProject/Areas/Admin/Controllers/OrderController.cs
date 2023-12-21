@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Interfaces;
 using OnlineShop.Db.Models;
@@ -8,6 +9,7 @@ using OnlineShopProject.Models;
 namespace OnlineShopProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Constants.DefaultAdminRole)]
     public class OrderController : Controller
     {
         private readonly IProductsRepository _productRepository;
@@ -21,20 +23,20 @@ namespace OnlineShopProject.Areas.Admin.Controllers
         }
         public IActionResult Orders()
         {
-            var orders = _ordersRepository.GetAll();
+            var orders = _ordersRepository.GetAllAsync();
             var models = _mapper.Map<List<OrderViewModel>>(orders);
             return View(models);
         }
         [HttpGet]
         public IActionResult EditOrder(Guid id)
         {
-            var order = _mapper.Map<OrderViewModel>(_ordersRepository.GetById(id));
+            var order = _mapper.Map<OrderViewModel>(_ordersRepository.GetByIdAsync(id));
             return View(order);
         }
         [HttpPost]
         public IActionResult EditOrder(Guid orderId, OrderStatus status)
         {
-            _ordersRepository.Edit(orderId, status);
+            _ordersRepository.EditAsync(orderId, status);
             return RedirectToAction("Orders");
         }
         

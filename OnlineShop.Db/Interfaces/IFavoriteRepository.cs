@@ -5,9 +5,9 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface IFavoriteRepository
     {
-        public List<Product> GetByUserId(string userId);
-        public Favorite GetById(Guid productId, string userId);
-        public void Add(Product product, string userId);
-        public void Remove(Guid productId, string userId);
+        public Task<List<Product>> GetByUserIdAsync(string userId);
+        public Task<Favorite> GetByIdAsync(Guid productId, string userId);
+        public Task AddAsync(Product product, string userId);
+        public Task RemoveAsync(Guid productId, string userId);
     }
 }

@@ -8,21 +8,23 @@ namespace OnlineShop.Db.Models
     public class AddressesRepository : IAddressesRepository
     {
         private readonly ApplicationContext _context;
-        public AddressesRepository(ApplicationContext context)
+        private readonly IdentityContext _identityContext;
+        public AddressesRepository(ApplicationContext context, IdentityContext identityContext)
         {
             _context = context;
+            _identityContext = identityContext;
         }
-        public DeliveryInfo GetByUserId(string userId)
+        public async Task<DeliveryInfo> GetByUserIdAsync(string userId)
         {
-             return _context.DeliveryInfos.Include(x => x.DeliveryInfoItems).Where(x => x.UserId == userId).FirstOrDefault();
+             return await _context.DeliveryInfos.Include(x => x.DeliveryInfoItems).Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
-        public DeliveryInfoItem GetById(Guid id)
+        public async Task<DeliveryInfoItem> GetByIdAsync(Guid id)
         {
-            return _context.DeliveryInfoItems.Where(x => x.Id == id).FirstOrDefault();
+            return await _context.DeliveryInfoItems.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
-        public void Add(DeliveryInfoItem address, string userId)
+        public async Task AddAsync(DeliveryInfoItem address, string userId)
         {
-            var addresses = GetByUserId(userId);
+            var addresses = await GetByUserIdAsync(userId);
             if (addresses == null)
             {
                 var model = new DeliveryInfo
@@ -45,22 +47,29 @@ namespace OnlineShop.Db.Models
                     addresses.DeliveryInfoItems.Add(address);
                 }
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public void Remove(Guid id, string userId)
+        public async Task RemoveAsync(Guid id, string userId)
         {
-            var info = GetByUserId(userId);
+            var info = await GetByUserIdAsync(userId);      
             var toRemove = info.DeliveryInfoItems.FirstOrDefault(x => x.Id == id);
             info.DeliveryInfoItems.Remove(toRemove);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public void Edit(DeliveryInfoItem address)
+        public async Task EditAsync(DeliveryInfoItem address)
         {
-            var toEdit = GetById(address.Id);
-            toEdit.Address = address.Address;
-            toEdit.PhoneNumber = address.PhoneNumber;
-            toEdit.FullName = address.FullName;
-            _context.SaveChanges();
+            await _context.DeliveryInfoItems.ExecuteUpdateAsync(x => 
+            x.SetProperty(x => x.Address, address.Address)
+            .SetProperty(x => x.PhoneNumber, address.PhoneNumber)
+            .SetProperty(x => x.FullName, address.FullName));
+        }
+        public async Task<DeliveryInfoItem> GetCurrentAsync(string userId)
+        {
+            return await _identityContext.Users.Include(x => x.DeliveryInfoItem).Where(x => x.Id == userId).Select(x => x.DeliveryInfoItem).FirstOrDefaultAsync();
+        }
+        public async Task SetCurrentAsync(string userId, Guid deliveryInfoItemId)
+        {
+            await _identityContext.Users.Where(z => z.Id == userId).ExecuteUpdateAsync(x => x.SetProperty(y => y.DeliveryInfoItemId, deliveryInfoItemId));
         }
     }
 }

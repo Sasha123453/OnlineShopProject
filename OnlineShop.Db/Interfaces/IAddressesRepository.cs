@@ -7,10 +7,12 @@ namespace OnlineShopProject.Interfaces
 {
     public interface IAddressesRepository
     {
-        public DeliveryInfo GetByUserId(string userId);
-        public DeliveryInfoItem GetById(Guid id);
-        public void Add(DeliveryInfoItem address, string userId);
-        public void Remove(Guid id, string userId);
-        public void Edit(DeliveryInfoItem address);
+        public Task<DeliveryInfo> GetByUserIdAsync(string userId);
+        public Task<DeliveryInfoItem> GetByIdAsync(Guid id);
+        public Task AddAsync(DeliveryInfoItem address, string userId);
+        public Task RemoveAsync(Guid id, string userId);
+        public Task EditAsync(DeliveryInfoItem address);
+        public Task<DeliveryInfoItem> GetCurrentAsync(string userId);
+        public Task SetCurrentAsync(string userId, Guid deliveryInfoItemId);
     }
 }

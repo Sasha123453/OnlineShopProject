@@ -1,7 +1,7 @@
 ﻿@model List<ProductViewModel>
 @await Html.PartialAsync("Admin");
 <section>
-    <a href="/admin/addpage">Редактировать</a>
+    <a href="/admin/product/addproduct">Редактировать</a>
     <table class="table">
         <thead>
             <tr>
@@ -19,8 +19,8 @@
                     <td>@x.Name</td>
                     <td>@x.Description</td>
                     <td>@x.Price</td>
-                    <td><a href="/admin/deleteproduct?id=@x.Id" class="btn btn-primary">удалить</a></td>
-                    <td><a href="/admin/editpage?id=@x.Id">Редактировать</a></td>
+                    <td><a href="/admin/product/deleteproduct?id=@x.Id" class="btn btn-primary">удалить</a></td>
+                    <td><a href="/admin/product/editproduct?id=@x.Id">Редактировать</a></td>
                 </tr>
             }
         </tbody>

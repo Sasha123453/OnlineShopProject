@@ -12,74 +12,99 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public Cart GetByUserId(string userId)
+        public async Task<Cart> GetByUserIdAsync(string userId)
         {
-            return _context.Carts.Include(x => x.Items).ThenInclude(x => x.Product).Where(x => x.UserId == userId).FirstOrDefault();
+            return await _context.Carts.Include(x => x.Items).ThenInclude(x => x.Product).Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
-        public void Add(string userId, Product model)
+        public async Task AddAsync(string userId, Product model)
         {
-            Cart cart = GetByUserId(userId);
+            var cart = await GetByUserIdAsync(userId);
             if (cart == null)
             {
-                Cart newCart = new Cart
+                cart = new Cart
                 {
-                    UserId = userId
+                    UserId = userId,
+                    Items = new List<CartItem>()
                 };
-                CartItem item = new CartItem
+                var item = new CartItem
                 {
                     Product = model,
                     Amount = 1
                 };
-                newCart.Items = new List<CartItem> { item };
-                _context.Add(newCart);
+                cart.Items.Add(item);
+                _context.Add(cart);
             }
             else
             {
-                CartItem cartItem = cart.Items.FirstOrDefault(x => x.ProductId == model.Id);
-                if (cartItem == null)
+                var item = cart.Items.FirstOrDefault(x => x.ProductId == model.Id);
+                if (item == null)
                 {
-                    CartItem item = new CartItem
+                    item = new CartItem
                     {
                         Product = model,
                         Amount = 1
                     };
                     cart.Items.Add(item);
                 }
-                else
-                {
-                    cartItem.Amount++;
-                }
+                else item.Amount++;
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public int GetCountByUserId(string userId)
+        public async Task<int> GetCountByUserIdAsync(string userId)
         {
-            return _context.Carts.Where(User => User.UserId == userId).Count();
+            return await _context.Carts.Where(User => User.UserId == userId).CountAsync();
         }
-        public void RemoveItems(List<CartItem> items, string userId)
+        public async Task RemoveItemsAsync(List<CartItem> items, string userId)
         {
-            var cart = GetByUserId(userId);
-            foreach (var item in items)
-            {
-                cart.Items.Remove(item);
-            }
-            _context.SaveChanges();
+            var cart = await GetByUserIdAsync(userId);
+            var intersect = cart.Items.Intersect(items);
+            await _context.CartItems.Where(x => intersect.Contains(x)).ExecuteDeleteAsync();
         }
-        public void DecreaseAmount(Guid id, string userId)
+        public async Task DecreaseAmountAsync(Guid id, string userId)
         {
-            Cart cart = GetByUserId(userId);
+            Cart cart = await GetByUserIdAsync(userId);
             var item = cart.Items.FirstOrDefault(x => x.ProductId == id);
             if (item != null)
             {
                 if (item.Amount == 1) _context.Remove(item);
                 else item.Amount--;
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public List<CartItem> GetByIds(List<Guid> ids, string userId)
+        public async Task<List<CartItem>> GetByIdsAsync(List<Guid> ids, string userId)
         {
-            var cart = GetByUserId(userId);
+            var cart = await GetByUserIdAsync(userId);
             return cart.Items.Where(x => ids.Contains(x.ProductId)).ToList();
+        }
+        public async Task<Cart> InitializeCart(string userId)
+        {
+            Cart cart = new Cart
+            {
+                UserId = userId,
+                Items = new List<CartItem>()
+            };
+            _context.Add(cart);
+            await _context.SaveChangesAsync();
+            return cart;
+        }
+        public async Task AddCartAsync(List<CartItem> newItems, string userId)
+        {
+            if (newItems != null)
+            {
+                var products = newItems.Select(x => x.Product).ToList();
+                _context.Products.AttachRange(products);
+                var cart = await GetByUserIdAsync(userId);
+                if (cart == null)
+                {
+                    cart = new Cart
+                    {
+                        UserId = userId,
+                        Items = new List<CartItem>(newItems)
+                    };
+                    _context.Carts.Add(cart);
+                }
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

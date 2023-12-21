@@ -12,21 +12,21 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public List<Product> GetByUserId(string userId)
+        public async Task<List<Product>> GetByUserIdAsync(string userId)
         {
-            return _context.Comparsions.Include(x => x.Product)
+            return await _context.Comparsions.Include(x => x.Product)
                 .Where(x => x.UserId == userId)
                 .Select(x => x.Product)
-                .ToList();
+                .ToListAsync();
         }
-        public Comparsion GetById(Guid productId, string userId)
+        public async Task<Comparsion> GetByIdAsync(Guid productId, string userId)
         {
-            return _context.Comparsions.Include(x => x.Product)
-                .FirstOrDefault(x => x.Product.Id == productId && x.UserId == userId)!;
+            return await _context.Comparsions.Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Product.Id == productId && x.UserId == userId)!;
         }
-        public void Add(Product product, string userId)
+        public async Task AddAsync(Product product, string userId)
         {
-            var check = GetById(product.Id, userId);
+            var check = await GetByIdAsync(product.Id, userId);
             if (check == null)
             {
                 var comparsion = new Comparsion
@@ -36,16 +36,11 @@ namespace OnlineShop.Db.Services
                 };
                 _context.Add(comparsion);
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public void Remove(Guid productId, string userId)
+        public async Task RemoveAsync(Guid productId, string userId)
         {
-            var model = GetById(productId, userId);
-            if (model != null)
-            {
-                _context.Comparsions.Remove(model);
-            }
-            _context.SaveChanges();
+            await _context.Comparsions.Where(x => x.ProductId == productId && x.UserId == userId).ExecuteDeleteAsync();
         }
     }
 }

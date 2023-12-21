@@ -1,0 +1,13 @@
+﻿@model DeliveryInfoPageViewModel
+@if (Model is not null)
+{
+    @foreach (var x in Model.Items)
+    {
+        <div>
+            <p>@x.FullName</p>
+            <p>@x.PhoneNumber</p>
+        </div>
+        <p>@x.Address</p>
+        <button id="choose_this" info_id="@x.Id">Выбрать</button>
+    }
+}

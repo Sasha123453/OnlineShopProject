@@ -1,7 +1,8 @@
 ﻿@model Login
-<link rel="stylesheet" href="~/css/Authorization/style.css">
+<link rel="stylesheet" href="~/css/Identity/style.css">
 <body>
     <form class="content" asp-action="Login" method="post">
+        @Html.AntiForgeryToken();
         <div class="vhod"><h1>Вход</h1></div>
         <div>
             <input asp-for="UserName" class="input" type="text" name="UserName" placeholder="Почта">

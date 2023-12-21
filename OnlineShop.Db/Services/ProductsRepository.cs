@@ -13,46 +13,39 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public Product GetById(Guid id)
+        public async Task<Product> GetByIdAsync(Guid id)
         {
-            return _context.Products.FirstOrDefault(x => x.Id == id);
+            return await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
         }
-        public List<Product> GetAll()
+        public async Task<List<Product>> GetAllAsync()
         {
-            return _context.Products.ToList();
+            return await _context.Products.ToListAsync();
         }
-        public List<Product> Search(string name)
+        public async Task<List<Product>> SearchAsync(string name)
         {
-            return _context.Products.Where(x => x.Name == name).ToList();
+            return await _context.Products.Where(x => x.Name == name).ToListAsync();
         }
-        public void Remove(Guid id)
+        public async Task RemoveAsync(Guid id)
         {
-            _context.Remove(_context.Products.FirstOrDefault(x => x.Id == id));
-            _context.SaveChanges();
+            await _context.Products.Where(x => x.Id == id).ExecuteDeleteAsync();
         }
 
-        public void Edit(Product model)
+        public async Task EditAsync(Product model)
         {
-            var toEdit = _context.Products.AsNoTracking().FirstOrDefault(x => x.Id == model.Id);
-            if (toEdit != null)
-            {
-                toEdit.Name = model.Name;
-                toEdit.Description = model.Description;
-                toEdit.Price = model.Price;
-                toEdit.Category = model.Category;
-                toEdit.Ram = model.Ram;
-                toEdit.Cpu = model.Cpu;
-                toEdit.CoresAmount = model.CoresAmount;
-                toEdit.MaxFrequency = model.MaxFrequency;
-            }
-            _context.Update(toEdit);
-            _context.SaveChanges();
-
+            await _context.Products.Where(x => x.Id == model.Id).ExecuteUpdateAsync(
+                x => x.SetProperty(x => x.Name, model.Name)
+                .SetProperty(x => x.Cpu, model.Cpu)
+                .SetProperty(x => x.Description, model.Description)
+                .SetProperty(x => x.Price, model.Price)
+                .SetProperty(x => x.MaxFrequency, model.MaxFrequency)
+                .SetProperty(x => x.Ram, model.Ram)
+                .SetProperty(x => x.Category, model.Category));
         }
-        public void Add(Product model)
+        public async Task AddAsync(Product model)
         {
             _context.Products.Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
+        
     }
 }

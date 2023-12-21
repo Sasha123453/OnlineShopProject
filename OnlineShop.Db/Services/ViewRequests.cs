@@ -4,12 +4,14 @@ using OnlineShop.Db.Models;
 
 namespace OnlineShop.Db.Services
 {
-    public class GenericRequests : IGenericRequests
+    public class ViewRequests : IViewRequests
     {
         private readonly ApplicationContext _context;
-        public GenericRequests(ApplicationContext context)
+        private readonly IdentityContext _identityContext;
+        public ViewRequests(ApplicationContext context, IdentityContext identityContext)
         {
             _context = context;
+            _identityContext = identityContext;
         }
         public List<ProductPage> GetProductPage(string userId, int page)
         {

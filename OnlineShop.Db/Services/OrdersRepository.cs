@@ -12,27 +12,26 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public void Add(Order order)
+        public async Task AddAsync(Order order)
         {
             _context.Orders.Add(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public void Edit(Guid orderId, OrderStatus status)
+        public async Task EditAsync(Guid orderId, OrderStatus status)
         {
-            GetById(orderId).Status = status;
-            _context.SaveChanges();
+            await _context.Orders.Where(x => x.Id == orderId).ExecuteUpdateAsync(x => x.SetProperty(x => x.Status, status));
         }
-        public List<Order> GetAll()
+        public async Task<List<Order>> GetAllAsync()
         {
-            return _context.Orders.Include(x => x.Info).Include(x => x.CartItems).ThenInclude(x => x.Product).ToList(); 
+            return await _context.Orders.Include(x => x.Info).Include(x => x.CartItems).ThenInclude(x => x.Product).ToListAsync(); 
         }
-        public List<Order> GetByUserId(string userId)
+        public async Task<List<Order>> GetByUserIdAsync(string userId)
         {
-            return _context.Orders.Where(x => x.UserId == userId).ToList();
+            return await _context.Orders.Where(x => x.UserId == userId).ToListAsync();
         }
-        public Order GetById(Guid id)
+        public async Task<Order> GetByIdAsync(Guid id)
         {
-            return _context.Orders.FirstOrDefault(x => x.Id == id);
+            return await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

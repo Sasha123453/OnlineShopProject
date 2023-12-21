@@ -1,47 +1,35 @@
 
-using OnlineShopProject.InMemoryModels;
 using OnlineShop.Db;
-using OnlineShopProject.Interfaces;
-using OnlineShop.Db.Interfaces;
-using OnlineShop.Db.Services;
 using OnlineShop.Db.Models;
 using Microsoft.EntityFrameworkCore;
 using OnlineShopProject.Mappers;
 using Microsoft.AspNetCore.Identity;
 using OnlineShopProject;
-using OnlineShopProject.Areas.Identity.Interfaces;
-using OnlineShopProject.Areas.Identity.Services;
+using OnlineShopProject.Models;
+using OnlineShopProject.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connection));
-builder.Services.AddIdentity<User,IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
-
+builder.Services.AddIdentity<User,IdentityRole>().AddEntityFrameworkStores<IdentityContext>().AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddTransient<IAuthService, AuthService>();
-builder.Services.AddScoped<ICartsRepository, CartsRepository>();
-builder.Services.AddTransient<IGenericRequests, GenericRequests>();
-builder.Services.AddSingleton<UserOrders>();
-builder.Services.AddTransient<IProductsRepository, ProductsRepository>();
+builder.Services.Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
+builder.Services.AddMyServices();
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
-builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddTransient<IOrdersRepository, OrdersRepository>();
-builder.Services.AddTransient<IAddressesRepository, AddressesRepository>();
-builder.Services.AddTransient<IComparsionRepository, ComparsionRepository>();
-builder.Services.AddTransient<IFavoriteRepository, FavoriteRepository>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.User.RequireUniqueEmail = true;
-
+    options.SignIn.RequireConfirmedEmail = false;
     options.Password.RequireDigit = true;
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "";
+    options.ReturnUrlParameter = "ReturnUrl";
     options.LogoutPath = "/Identity/Auth/Logout";
     options.ExpireTimeSpan = TimeSpan.FromDays(7);
     options.LoginPath = "/Identity/Auth/Login";
@@ -66,11 +54,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area:exists}/{controller=Shop}/{action=ProductsPage}/{id?}");

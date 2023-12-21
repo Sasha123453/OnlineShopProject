@@ -1,8 +1,9 @@
 ﻿@model Register
-<link rel="stylesheet" href="~/css/Authorization/style.css">
+<link rel="stylesheet" href="~/css/Identity/style.css">
 <div class="content">
     <div class="vhod"><h1>Регистрация</h1></div>
     <form asp-action="Register" method="post">
+        @Html.AntiForgeryToken();
         <div>
             <div asp-validation-summary="ModelOnly"></div>
             <input asp-for="Email" class="input" type="text" name="Email" placeholder="Почта">

@@ -7,11 +7,12 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface ICartsRepository
     {
-        public Cart GetByUserId(string userId);
-        public void Add(string userId, Product model);
-        public void DecreaseAmount(Guid id, string userId);
-        public List<CartItem> GetByIds(List<Guid> ids, string userId);
-        public void RemoveItems(List<CartItem> items, string userId);
-        public int GetCountByUserId(string userId);
+        public Task<Cart> GetByUserIdAsync(string userId);
+        public Task AddAsync(string userId, Product model);
+        public Task DecreaseAmountAsync(Guid id, string userId);
+        public Task<List<CartItem>> GetByIdsAsync(List<Guid> ids, string userId);
+        public Task RemoveItemsAsync(List<CartItem> items, string userId);
+        public Task<int> GetCountByUserIdAsync(string userId);
+        public Task AddCartAsync(List<CartItem> newCart, string userId);
     }
 }

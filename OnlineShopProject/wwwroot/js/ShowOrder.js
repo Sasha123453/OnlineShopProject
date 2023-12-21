@@ -10,12 +10,14 @@ $(document).ready(function () {
 var decreaseButtons = document.querySelectorAll("#decreaseamount");
 var orderButton = document.getElementById("showorder");
 orderButton.addEventListener("click", GetReq);
+var curInfo = "";
 function GetReq() {
     debugger;
     var url = "/cart/createorder?"
     ids.forEach(function (id) {
         url += "ids=" + id + "&";
     });
+    url += "curInfo=" + curInfo;
     window.location.href = url;
 }
 decreaseButtons.forEach(function (button) {

@@ -4,7 +4,7 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface IUsersService
     {
-        public DeliveryInfoItem GetCurrentDeliveryInfoItem(string userId);
-        public void SetCurrentDeliveryInfoItem(string userId, Guid deliveryInfoItemId);
+        public Task<DeliveryInfoItem> GetCurrentAsync(string userId);
+        public Task SetCurrentAsync(string userId, Guid deliveryInfoItemId);
     }
 }

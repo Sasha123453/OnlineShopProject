@@ -1,6 +1,7 @@
 ﻿@model DeliveryInfoItemViewModel
 <section>
     <form asp-action="edit" method="post">
+        @Html.AntiForgeryToken();
         <div asp-validation-summary="ModelOnly"></div>
         <input type="hidden" asp-for="Id"/>
         <div>

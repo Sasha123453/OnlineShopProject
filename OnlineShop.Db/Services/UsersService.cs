@@ -10,7 +10,7 @@ using OnlineShopProject.Models;
 
 namespace OnlineShop.Db.Services
 {
-    public class UsersService : IUsersService
+    public class UsersService
     {
         private readonly IdentityContext _context;
         
@@ -18,15 +18,6 @@ namespace OnlineShop.Db.Services
         {
             _context = context;
         }
-        public DeliveryInfoItem GetCurrentDeliveryInfoItem(string userId)
-        {
-            return _context.Users.Include(x => x.DeliveryInfoItem).Where(x => x.Id == userId).Select(x => x.DeliveryInfoItem).FirstOrDefault();
-        }
-        public void SetCurrentDeliveryInfoItem(string userId, Guid deliveryInfoItemId)
-        {
-            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
-            user.DeliveryInfoItemId = deliveryInfoItemId;
-            _context.SaveChanges();
-        }
+        
     }
 }

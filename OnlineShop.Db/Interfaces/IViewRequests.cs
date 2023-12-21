@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.Db.Interfaces
 {
-    public interface IGenericRequests
+    public interface IViewRequests
     {
     }
 }

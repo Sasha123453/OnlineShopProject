@@ -4,11 +4,11 @@ namespace OnlineShop.Db.Interfaces
 {
     public interface IProductsRepository
     {
-        public Product GetById(Guid id);
-        public List<Product> GetAll();
-        public void Remove(Guid id);
-        public void Edit(Product model);
-        public void Add(Product model);
-        public List<Product> Search(string name);
+        public Task<Product> GetByIdAsync(Guid id);
+        public Task<List<Product>> GetAllAsync();
+        public Task RemoveAsync(Guid id);
+        public Task EditAsync(Product model);
+        public Task AddAsync(Product model);
+        public Task<List<Product>> SearchAsync(string name);
     }
 }
